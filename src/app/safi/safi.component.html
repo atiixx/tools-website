@@ -1,0 +1,8 @@
+<h2>Safi'Jiiva Event Info</h2>
+<div>Läuft das Safi'Jiiva Event gerade? {{ sEventGoing }}</div>
+<div *ngIf="!eventCurrentlyGoing; else bisBlock">
+  Nächstes Safi'Jiiva Event: {{ nextEvent }}
+</div>
+<ng-template #bisBlock>
+  <div>Event bis {{ eventEnd }}</div>
+</ng-template>
