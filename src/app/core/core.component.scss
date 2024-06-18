@@ -1,0 +1,61 @@
+.header {
+  width: 100vw;
+  background: black;
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pagename {
+  color: rgb(108, 29, 253);
+  font-weight: 600;
+  font-size: 25px;
+}
+
+.footer {
+  width: 100vw;
+  background: black;
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  bottom: 0;
+  position: absolute;
+}
+
+.footertext {
+  color: rgb(108, 29, 253);
+}
+
+.date {
+  position: absolute;
+  right: 0;
+  padding: 10px;
+  color: rgb(108, 29, 253);
+}
+
+.main:before {
+  content: "";
+  opacity: 0.8;
+  background-image: url("/assets/images/background.jpg"); /* Path to your background image */
+  background-size: cover; /* Adjusts the background image to cover the entire element */
+  background-position: center; /* Centers the background image */
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: -1;
+}
+
+.main {
+  padding: 15px;
+  height: 100vh;
+}
+
+.icon {
+  max-height: 45px;
+  padding: 0px;
+  margin-right: 15px;
+}

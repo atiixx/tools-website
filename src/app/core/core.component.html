@@ -1,17 +1,25 @@
-<header>
+<header class="header">
+  <div style="display: flex; justify-content: center; align-items: center">
+    <img
+      src="/assets/icons/icons8werkzeugkasten256.png"
+      alt="Logo"
+      class="icon"
+    />
+    <div class="pagename">Jonas' Tools</div>
+  </div>
+  <div class="date">{{ date }}</div>
   <nav>
-    <h1>Jonas' Tools</h1>
     <!-- Add your navigation items here -->
   </nav>
 </header>
 
-<main>
+<main class="main">
   <app-safi></app-safi>
   <router-outlet></router-outlet>
   <!-- This will render the routed component content -->
 </main>
 
-<footer>
-  <p>Created am 18. Juni 2023</p>
+<footer class="footer">
+  <div class="">Created am 18. Juni 2023</div>
   <!-- Add your footer content here -->
 </footer>
