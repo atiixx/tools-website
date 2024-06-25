@@ -1,14 +1,20 @@
-<h2>Safi'Jiiva Event Info</h2>
+<h2>MH:W Event Info</h2>
 <div class="wrapper">
   <div>
-    <div>Läuft das Safi'Jiiva Event gerade?</div>
-    <div class="answerBox">{{ sEventGoing }}</div>
+    <div>Welches Event läuft aktuell?</div>
+    <div *ngIf="safiEventCurrently; else kulveBlock" class="columnFlexBox">
+      <img class="monstericon" src="assets/icons/safi.png" />
+      <div style="color: red">Safi'Jiiva</div>
+    </div>
+    <ng-template #kulveBlock>
+      <div class="columnFlexBox">
+        <img src="assets/icons/kulve.png" class="monstericon" />
+        <div style="color: gold">Kulve Taroth</div>
+      </div>
+    </ng-template>
   </div>
-  <div *ngIf="!eventCurrentlyGoing; else bisBlock">
-    <div>Nächstes Safi'Jiiva Event:</div>
-    <div class="answerBox">{{ nextEvent }}</div>
+  <div class="answerBox">
+    Event wechselt am <br />
+    {{ eventEnd }}
   </div>
-  <ng-template #bisBlock>
-    <div>Event bis {{ eventEnd }}</div>
-  </ng-template>
 </div>
