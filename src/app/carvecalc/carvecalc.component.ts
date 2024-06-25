@@ -40,7 +40,7 @@ export class CarvecalcComponent {
   }
 
   calculateOnCarve() {
-    return 1 - Math.pow(this.carvingChance / 100, this.carvingCount);
+    return 1 - Math.pow(1 - this.carvingChance / 100, this.carvingCount);
   }
 
   calculateOnCarveWithTailCut() {
