@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 export class CarvecalcComponent {
   public carvingChance: number = 0;
   public tailCarveChance: number = 0;
-  public carvingCount: number = 0;
+  public carvingCount: number = 3;
   public chanceWithKill: string = '0';
   public chanceWithKillTailCut: string = '0';
 
