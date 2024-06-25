@@ -44,8 +44,9 @@ export class CarvecalcComponent {
   }
 
   calculateOnCarveWithTailCut() {
-    const chanceKill = Math.pow(this.carvingChance / 100, this.carvingCount);
-    const chanceKillTailCut = this.tailCarveChance / 100;
+    const chanceKill =
+      1 - Math.pow(this.carvingChance / 100, this.carvingCount);
+    const chanceKillTailCut = 1 - this.tailCarveChance / 100;
     return 1 - chanceKill * chanceKillTailCut;
   }
 }
