@@ -1,0 +1,41 @@
+<h2>Timo's carving calculator</h2>
+<div>
+  <label>Carving Chance:</label>
+  <input
+    type="text"
+    placeholder="%"
+    [(ngModel)]="carvingChance"
+    (ngModelChange)="onInputChange($event)"
+    class="inputfield"
+  />
+</div>
+<div>
+  <label>Anzahl Carves:</label>
+  <input
+    type="text"
+    placeholder="%"
+    [(ngModel)]="carvingCount"
+    (ngModelChange)="onCarveCountChange($event)"
+    class="inputfield"
+  />
+</div>
+<div>
+  <label>Tail Carving Chance:</label>
+  <input
+    type="text"
+    placeholder="%"
+    [(ngModel)]="tailCarveChance"
+    (ngModelChange)="onTailCarveChange($event)"
+    class="inputfield"
+  />
+</div>
+<div>
+  <button class="button" (click)="calculate()">Berechnen</button>
+</div>
+
+<div>
+  <p>
+    Wahrscheinlichkeit für das Item on Kill (mit Tailcut): {{ chanceWithKill }}%
+    ({{ chanceWithKillTailCut }}%)
+  </p>
+</div>

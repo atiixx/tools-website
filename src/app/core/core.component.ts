@@ -4,11 +4,12 @@ import { SafiComponent } from '../safi/safi.component';
 import { DatePipe, registerLocaleData } from '@angular/common';
 import de from '@angular/common/locales/de';
 import { MatIconModule } from '@angular/material/icon';
+import { CarvecalcComponent } from '../carvecalc/carvecalc.component';
 
 @Component({
   selector: 'app-core',
   standalone: true,
-  imports: [RouterOutlet, SafiComponent, MatIconModule],
+  imports: [RouterOutlet, SafiComponent, MatIconModule, CarvecalcComponent],
   templateUrl: './core.component.html',
   styleUrl: './core.component.scss',
   providers: [
