@@ -3,8 +3,8 @@
   width: 180px;
   margin-bottom: 15px;
 }
-.flexbox {
+.hbox {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  gap: 25px;
+  flex-wrap: wrap;
 }

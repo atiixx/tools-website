@@ -1,0 +1,46 @@
+<div>
+  <input
+    type="text"
+    (input)="search()"
+    placeholder="Search items..."
+    style="width: 200px"
+    [(ngModel)]="filterString"
+  />
+  <ul class="searchResultList">
+    <li
+      class="searchResultItem"
+      *ngFor="let item of searchResults"
+      (click)="selectItem(item)"
+      style="width: 185px"
+    >
+      {{ item.name }}
+    </li>
+  </ul>
+
+  <div *ngIf="selectedItem" class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Monster</th>
+          <th>Chance</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of getTableData()">
+          <td>
+            {{ row.monster_name }}
+          </td>
+          <td>{{ row.carving_chance }}%</td>
+          <td>
+            <button (click)="calculateSelected(row)">
+              <mat-icon aria-hidden="false" aria-label="Calculator Icon"
+                >calculate</mat-icon
+              >
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

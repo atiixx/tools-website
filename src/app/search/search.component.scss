@@ -1,0 +1,52 @@
+.searchResultList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  position: absolute;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  min-height: fit-content;
+  max-height: 250px;
+}
+
+.searchResultItem {
+  color: black;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.table-container {
+  overflow: auto;
+  height: 150px;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+th {
+  background-color: rgb(161, 161, 161, 0.5);
+  color: white;
+  padding: 10px;
+  text-align: left;
+}
+td {
+  color: white;
+  padding: 2px;
+  text-align: center;
+}
+table {
+  margin-top: 5px;
+}
+
+button {
+  height: 35px;
+  width: 35px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  border: none;
+}

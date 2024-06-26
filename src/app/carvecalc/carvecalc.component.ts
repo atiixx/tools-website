@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { FileService } from '../services/file.service';
+import { SearchComponent } from '../search/search.component';
 
 @Component({
   selector: 'app-carvecalc',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, SearchComponent],
   templateUrl: './carvecalc.component.html',
   styleUrl: './carvecalc.component.scss',
+  providers: [FileService],
 })
 export class CarvecalcComponent {
   public carvingChance: number = 0;
@@ -15,7 +18,7 @@ export class CarvecalcComponent {
   public chanceWithKill: string = '0';
   public chanceWithKillTailCut: string = '0';
 
-  constructor() {}
+  constructor(private fileService: FileService) {}
 
   onInputChange(value: string) {
     this.carvingChance = Number(value);
@@ -29,14 +32,22 @@ export class CarvecalcComponent {
   }
 
   calculate() {
-    this.chanceWithKill = (this.calculateOnCarve() * 100).toFixed(2);
+    const calculatedKillChance = this.calculateOnCarve() * 100;
+    let calculatedKillTailCutChance = 0;
     if (this.tailCarveChance > 0) {
-      this.chanceWithKillTailCut = (
-        this.calculateOnCarveWithTailCut() * 100
-      ).toFixed(2);
+      calculatedKillTailCutChance = this.calculateOnCarveWithTailCut() * 100;
     } else {
-      this.chanceWithKillTailCut = this.chanceWithKill;
+      calculatedKillTailCutChance = calculatedKillChance;
     }
+    this.updateProperties(calculatedKillChance, calculatedKillTailCutChance);
+  }
+
+  updateProperties(
+    calculatedKillChance: number,
+    calculatedKillTailCutChance: number
+  ) {
+    this.chanceWithKill = calculatedKillChance.toFixed(2);
+    this.chanceWithKillTailCut = calculatedKillTailCutChance.toFixed(2);
   }
 
   calculateOnCarve() {
@@ -50,5 +61,10 @@ export class CarvecalcComponent {
     );
     const chanceKillTailCut = 1 - this.tailCarveChance / 100;
     return 1 - chanceKill * chanceKillTailCut;
+  }
+
+  receiveCalcTask($event: any) {
+    this.carvingChance = Number($event.carving_chance);
+    this.calculate();
   }
 }
