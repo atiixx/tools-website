@@ -44,8 +44,17 @@
         {{ chanceWithKill }}% ({{ chanceWithKillTailCut }}%)
       </div>
     </div>
+    <div *ngIf="this.captureChance > 0" style="margin-top: 5px">
+      Wahrscheinlichkeit für das Item bei Capture:
+      <div style="display: inline-flex; font-weight: bold; font-size: larger">
+        {{ captureChance }}%
+      </div>
+    </div>
   </div>
   <div style="margin-top: 5px">
-    <app-search (sendCalcTask)="receiveCalcTask($event)"></app-search>
+    <app-search
+      (sendCalcTask)="receiveCalcTask($event)"
+      (sendCaptureInfo)="receiveCaptureInfo($event)"
+    ></app-search>
   </div>
 </div>
