@@ -64,7 +64,7 @@ export class CarvecalcComponent {
   }
 
   receiveCalcTask($event: any) {
-    this.carvingChance = Number($event.carving_chance);
+    this.carvingChance = Number($event.chance);
     this.calculate();
   }
 }

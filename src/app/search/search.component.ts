@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FileService } from '../services/file.service';
 import { CommonModule } from '@angular/common';
-import { CarvingData } from '../carvecalc/carvingdata';
+import { ItemData } from '../carvecalc/itemdata';
 import { FormsModule } from '@angular/forms';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 
@@ -14,16 +14,20 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
   providers: [FileService],
 })
 export class SearchComponent {
-  items: CarvingData[] = [];
-  searchResults: CarvingData[] = [];
-  selectedItem: CarvingData | null = null;
+  items: ItemData[] = [];
+  itemsWithCaptures: ItemData[] = [];
+  searchResults: ItemData[] = [];
+  selectedItem: ItemData | null = null;
   filterString: string = '';
-  @Output() sendCalcTask = new EventEmitter<CarvingData>();
+  @Output() sendCalcTask = new EventEmitter<ItemData>();
 
   constructor(private fileService: FileService) {}
 
   ngOnInit(): void {
-    this.items = this.fileService.getMH4UData();
+    this.itemsWithCaptures = this.fileService.getMH4UData();
+    this.items = this.itemsWithCaptures.filter((item) =>
+      item.details.find((x) => x.type != 'Capture')
+    );
   }
 
   search(): void {
@@ -32,27 +36,28 @@ export class SearchComponent {
     );
   }
 
-  selectItem(item: CarvingData): void {
+  selectItem(item: ItemData): void {
     this.selectedItem = item;
     this.resetInputField();
   }
 
   getTableData(): any[] {
     if (this.selectedItem) {
-      return this.selectedItem.carve_chances;
+      return this.selectedItem.details.filter(
+        (itemDetails) => itemDetails.type != 'Capture'
+      );
     }
     return [];
   }
 
-  calculateSelected(monster: CarvingData) {
+  calculateSelected(monster: ItemData) {
     if (this.selectedItem) {
-      console.log(monster);
       this.sendCalcTask.emit(monster);
     }
   }
 
   resetInputField(): void {
-    this.filterString = '';
+    this.filterString = this.selectedItem ? this.selectedItem.name : '';
     this.searchResults = [];
   }
 }

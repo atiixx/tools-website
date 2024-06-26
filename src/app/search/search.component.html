@@ -22,6 +22,7 @@
       <thead>
         <tr>
           <th>Monster</th>
+          <th>Rank</th>
           <th>Chance</th>
           <th></th>
         </tr>
@@ -31,7 +32,10 @@
           <td>
             {{ row.monster_name }}
           </td>
-          <td>{{ row.carving_chance }}%</td>
+          <td>
+            {{ row.rank }}
+          </td>
+          <td>{{ row.chance }}%</td>
           <td>
             <button (click)="calculateSelected(row)">
               <mat-icon aria-hidden="false" aria-label="Calculator Icon"
