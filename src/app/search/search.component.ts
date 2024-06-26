@@ -16,15 +16,7 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
 export class SearchComponent {
   items: CarvingData[] = [];
   searchResults: CarvingData[] = [];
-  selectedItem: CarvingData | null = {
-    name: 'Allfire Stone',
-    carve_chances: [
-      {
-        monster_name: 'Akantor',
-        carving_chance: 10,
-      },
-    ],
-  };
+  selectedItem: CarvingData | null = null;
   filterString: string = '';
   @Output() sendCalcTask = new EventEmitter<CarvingData>();
 
