@@ -51,6 +51,8 @@ export class SearchComponent implements OnChanges {
       this.allItems = this.fileService.getMH3UData();
     } else if (this.game === 'mh4u') {
       this.allItems = this.fileService.getMH4UData();
+    } else if (this.game === 'mhgu') {
+      this.allItems = this.fileService.getMHGUData();
     }
   }
   ngOnChanges(changes: SimpleChanges): void {
