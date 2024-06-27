@@ -13,53 +13,14 @@
 </h2>
 
 <div class="hbox">
-  <div style="width: 250px; margin: 5px 0px 5px 0px">
-    <div>
-      <label class="label">Carving Chance:</label>
-      <input
-        type="text"
-        placeholder="%"
-        [(ngModel)]="carvingChance"
-        (ngModelChange)="onInputChange($event)"
-        class="inputfield"
-        style="width: 50px"
-      />%
-    </div>
-    <div>
-      <label class="label">Anzahl Carves:</label>
-      <input
-        type="text"
-        placeholder="%"
-        [(ngModel)]="carvingCount"
-        (ngModelChange)="onCarveCountChange($event)"
-        class="inputfield"
-        style="width: 50px"
-      />
-    </div>
-    <div>
-      <label class="label">Tail Carving Chance:</label>
-      <input
-        type="text"
-        placeholder="%"
-        [(ngModel)]="tailCarveChance"
-        (ngModelChange)="onTailCarveChange($event)"
-        class="inputfield"
-        style="width: 50px"
-      />%
-    </div>
-    <div>
-      <label class="label">Chance on Capture:</label>
-      <input
-        type="text"
-        placeholder="%"
-        [(ngModel)]="captureChance"
-        (ngModelChange)="onCaptureChanceChange($event)"
-        class="inputfield"
-        style="width: 50px"
-      />%
-    </div>
-    <div>
-      <button class="button" (click)="calculate()">Berechnen</button>
+  <div>
+    <div style="width: 250px">
+      <div style="margin-top: 5px">
+        <app-search
+          (sendCalcTask)="receiveCalcTask($event)"
+          [game]="game"
+        ></app-search>
+      </div>
     </div>
   </div>
   <div>
@@ -108,14 +69,53 @@
       </ul>
     </div>
   </div>
-  <div>
-    <div style="width: 250px">
-      <div style="margin-top: 5px">
-        <app-search
-          (sendCalcTask)="receiveCalcTask($event)"
-          [game]="game"
-        ></app-search>
-      </div>
+  <div style="width: 250px; margin: 5px 0px 5px 0px">
+    <div>
+      <label class="label">Carving Chance:</label>
+      <input
+        type="text"
+        placeholder="%"
+        [(ngModel)]="carvingChance"
+        (ngModelChange)="onInputChange($event)"
+        class="inputfield"
+        style="width: 50px"
+      />%
+    </div>
+    <div>
+      <label class="label">Anzahl Carves:</label>
+      <input
+        type="text"
+        placeholder="%"
+        [(ngModel)]="carvingCount"
+        (ngModelChange)="onCarveCountChange($event)"
+        class="inputfield"
+        style="width: 50px"
+      />
+    </div>
+    <div>
+      <label class="label">Tail Carving Chance:</label>
+      <input
+        type="text"
+        placeholder="%"
+        [(ngModel)]="tailCarveChance"
+        (ngModelChange)="onTailCarveChange($event)"
+        class="inputfield"
+        style="width: 50px"
+      />%
+    </div>
+    <div>
+      <label class="label">Chance on Capture:</label>
+      <input
+        type="text"
+        placeholder="%"
+        [(ngModel)]="captureChance"
+        (ngModelChange)="onCaptureChanceChange($event)"
+        class="inputfield"
+        style="width: 50px"
+      />%
+    </div>
+    <div>
+      <button class="button" (click)="calculate()">Berechnen</button>
     </div>
   </div>
 </div>
