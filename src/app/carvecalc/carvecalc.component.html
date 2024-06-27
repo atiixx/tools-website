@@ -1,4 +1,16 @@
-<h2>Timo's carving calculator</h2>
+<h2>
+  Timo's carving calculator<select
+    name="games"
+    id="games"
+    (ngModelChange)="onGameChange($event)"
+    [(ngModel)]="game"
+    style="margin-left: 15px"
+  >
+    <option value="mh3u">MH3U</option>
+    <option value="mh4u">MH4U</option>
+  </select>
+</h2>
+
 <div class="hbox">
   <div style="width: 250px; margin: 5px 0px 5px 0px">
     <div>
@@ -86,10 +98,23 @@
         </td>
       </tr>
     </table>
+    <div *ngIf="aOtherTypes.length > 0" style="margin-top: 10px">
+      <span>Erhöhe die Chance weiter durch: </span>
+      <ul *ngFor="let type of aOtherTypes">
+        <li style="margin-left: 15px">
+          {{ type }}
+        </li>
+      </ul>
+    </div>
   </div>
-  <div style="width: 250px">
-    <div style="margin-top: 5px">
-      <app-search (sendCalcTask)="receiveCalcTask($event)"></app-search>
+  <div>
+    <div style="width: 250px">
+      <div style="margin-top: 5px">
+        <app-search
+          (sendCalcTask)="receiveCalcTask($event)"
+          [game]="game"
+        ></app-search>
+      </div>
     </div>
   </div>
 </div>

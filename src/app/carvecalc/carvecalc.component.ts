@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { FileService } from '../services/file.service';
 import { SearchComponent } from '../search/search.component';
 import { CommonModule } from '@angular/common';
+import { Details } from './itemdata';
 
 @Component({
   selector: 'app-carvecalc',
@@ -17,14 +18,18 @@ export class CarvecalcComponent {
   public tailCarveChance: number = 0;
   public carvingCount: number = 3;
   public captureChance: number = 0;
+  public otherTypes: Details[] = [];
   public sChanceWithKill: string = '0';
   public sChanceWithKillTailCut: string = '0';
   public sChanceWithCapture: string = '0';
   public sChanceWithCaptureAndTail: string = '0';
+  public aOtherTypes: Details[] = [];
+
+  public game: string = 'mh4u';
 
   constructor(private fileService: FileService) {}
 
-  calculate() {
+  calculate(otherTypes?: Details[]) {
     const calculatedKillChance = this.calculateOnCarve();
     const calculatedCaptureItemChance = this.calculateCaptureChance();
     let calculatedKillTailCutChance = 0;
@@ -40,7 +45,8 @@ export class CarvecalcComponent {
       calculatedKillChance,
       calculatedKillTailCutChance,
       calculatedCaptureItemChance,
-      calculatedCaptureTailCutChance
+      calculatedCaptureTailCutChance,
+      otherTypes
     );
   }
 
@@ -48,13 +54,16 @@ export class CarvecalcComponent {
     calculatedKillChance: number,
     calculatedKillTailCutChance: number,
     calculatedCaptureItemChance: number,
-    calculatedCaptureItemChanceWithTail: number
+    calculatedCaptureItemChanceWithTail: number,
+    otherTypes?: Details[]
   ) {
     this.sChanceWithKill = calculatedKillChance.toFixed(2);
     this.sChanceWithKillTailCut = calculatedKillTailCutChance.toFixed(2);
     this.sChanceWithCapture = calculatedCaptureItemChance.toFixed(2);
     this.sChanceWithCaptureAndTail =
       calculatedCaptureItemChanceWithTail.toFixed(2);
+
+    this.aOtherTypes = otherTypes ? otherTypes : [];
   }
 
   calculateOnCarve() {
@@ -76,19 +85,33 @@ export class CarvecalcComponent {
     const carveData = $event.carveData;
     const captureData = $event.captureData;
     const tailcutData = $event.tailCarveData;
+    const additionalData = $event.additionalData;
+    let otherTypes: Details[] = [];
 
     if (carveData) {
       this.carvingChance = Number(carveData.chance);
+    } else {
+      this.carvingChance = 0;
     }
     if (captureData) {
       this.captureChance = Number(captureData.chance);
+    } else {
+      this.captureChance = 0;
     }
     if (tailcutData) {
       this.tailCarveChance = Number(tailcutData.chance);
+    } else {
+      this.tailCarveChance = 0;
     }
-    this.calculate();
+
+    if (additionalData) {
+      for (let t in additionalData) {
+        otherTypes.push(additionalData[t].type);
+      }
+    }
+
+    this.calculate(otherTypes);
   }
-  //TODO: MH Game changen
 
   calculateCaptureChance() {
     const chance = this.captureChance / 100;
@@ -127,7 +150,25 @@ export class CarvecalcComponent {
     return combinedChance * 100;
   }
 
+  resetView() {
+    this.carvingChance = 0;
+    this.tailCarveChance = 0;
+    this.captureChance = 0;
+    this.carvingCount = 3;
+    this.otherTypes = [];
+    this.sChanceWithKill = '0';
+    this.sChanceWithKillTailCut = '0';
+    this.sChanceWithCapture = '0';
+    this.sChanceWithCaptureAndTail = '0';
+    this.aOtherTypes = [];
+  }
+
   //Events
+
+  public onGameChange($event: any) {
+    this.game = $event;
+    this.resetView();
+  }
 
   onInputChange(value: string) {
     this.carvingChance = Number(value);
