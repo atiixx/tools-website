@@ -7,5 +7,6 @@ export interface Details {
 
 export interface ItemData {
   name: string;
+  url: string;
   details: Details[];
 }

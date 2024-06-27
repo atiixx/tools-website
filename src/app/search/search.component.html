@@ -1,11 +1,23 @@
 <div>
-  <input
-    type="text"
-    (input)="search()"
-    placeholder="Search items..."
-    style="width: 200px"
-    [(ngModel)]="filterString"
-  />
+  <div style="display: flex; height: 35px">
+    <input
+      type="text"
+      (input)="search()"
+      placeholder="Search items..."
+      style="width: 200px"
+      [(ngModel)]="filterString"
+    />
+    <button
+      *ngIf="this.selectedItem"
+      (click)="goToLink()"
+      style="background-color: transparent"
+    >
+      <img
+        src="assets/icons/kiranicoicon.png"
+        style="width: 30px; border: 1px solid white; border-radius: 5px"
+      />
+    </button>
+  </div>
   <ul class="searchResultList">
     <li
       class="searchResultItem"
@@ -23,7 +35,6 @@
         <tr>
           <th>Monster</th>
           <th>Rank</th>
-          <th>Chance</th>
           <th></th>
         </tr>
       </thead>
@@ -35,9 +46,8 @@
           <td>
             {{ row.rank }}
           </td>
-          <td>{{ row.chance }}%</td>
-          <td>
-            <button (click)="calculateSelected(row)">
+          <td style="text-align: right">
+            <button (click)="calculateSelected(row.monster_name, row.rank)">
               <mat-icon aria-hidden="false" aria-label="Calculator Icon"
                 >calculate</mat-icon
               >

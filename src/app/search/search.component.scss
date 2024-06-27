@@ -26,6 +26,9 @@
 table {
   border-collapse: collapse;
   border-spacing: 0;
+  overflow-x: hidden;
+  margin-top: 5px;
+  width: 240px;
 }
 th {
   background-color: rgb(161, 161, 161, 0.5);
@@ -37,9 +40,6 @@ td {
   color: white;
   padding: 2px;
   text-align: center;
-}
-table {
-  margin-top: 5px;
 }
 
 button {

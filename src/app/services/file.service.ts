@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import mh4uItemData from '../../assets/data/mh4u_items.json';
+import mh4uItemData from '../../assets/data/mh4u_carve_capture_tail.json';
 import { ItemData } from '../carvecalc/itemdata';
 
 @Injectable({

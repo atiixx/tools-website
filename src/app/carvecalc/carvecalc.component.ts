@@ -16,44 +16,51 @@ export class CarvecalcComponent {
   public carvingChance: number = 0;
   public tailCarveChance: number = 0;
   public carvingCount: number = 3;
-  public chanceWithKill: string = '0';
-  public chanceWithKillTailCut: string = '0';
-  public captureChance = 0;
+  public captureChance: number = 0;
+  public sChanceWithKill: string = '0';
+  public sChanceWithKillTailCut: string = '0';
+  public sChanceWithCapture: string = '0';
+  public sChanceWithCaptureAndTail: string = '0';
 
   constructor(private fileService: FileService) {}
 
-  onInputChange(value: string) {
-    this.carvingChance = Number(value);
-  }
-
-  onCarveCountChange(value: string) {
-    this.carvingCount = Number(value);
-  }
-  onTailCarveChange(value: string) {
-    this.tailCarveChance = Number(value);
-  }
-
   calculate() {
-    const calculatedKillChance = this.calculateOnCarve() * 100;
+    const calculatedKillChance = this.calculateOnCarve();
+    const calculatedCaptureItemChance = this.calculateCaptureChance();
     let calculatedKillTailCutChance = 0;
+    let calculatedCaptureTailCutChance = 0;
     if (this.tailCarveChance > 0) {
       calculatedKillTailCutChance = this.calculateOnCarveWithTailCut() * 100;
+      calculatedCaptureTailCutChance = this.calculateCaptureChanceWithTailCut();
     } else {
       calculatedKillTailCutChance = calculatedKillChance;
+      calculatedCaptureTailCutChance = calculatedCaptureItemChance;
     }
-    this.updateProperties(calculatedKillChance, calculatedKillTailCutChance);
+    this.updateTemplateStrings(
+      calculatedKillChance,
+      calculatedKillTailCutChance,
+      calculatedCaptureItemChance,
+      calculatedCaptureTailCutChance
+    );
   }
 
-  updateProperties(
+  updateTemplateStrings(
     calculatedKillChance: number,
-    calculatedKillTailCutChance: number
+    calculatedKillTailCutChance: number,
+    calculatedCaptureItemChance: number,
+    calculatedCaptureItemChanceWithTail: number
   ) {
-    this.chanceWithKill = calculatedKillChance.toFixed(2);
-    this.chanceWithKillTailCut = calculatedKillTailCutChance.toFixed(2);
+    this.sChanceWithKill = calculatedKillChance.toFixed(2);
+    this.sChanceWithKillTailCut = calculatedKillTailCutChance.toFixed(2);
+    this.sChanceWithCapture = calculatedCaptureItemChance.toFixed(2);
+    this.sChanceWithCaptureAndTail =
+      calculatedCaptureItemChanceWithTail.toFixed(2);
   }
 
   calculateOnCarve() {
-    return 1 - Math.pow(1 - this.carvingChance / 100, this.carvingCount);
+    const probability =
+      1 - Math.pow(1 - this.carvingChance / 100, this.carvingCount);
+    return probability * 100;
   }
 
   calculateOnCarveWithTailCut() {
@@ -66,24 +73,74 @@ export class CarvecalcComponent {
   }
 
   receiveCalcTask($event: any) {
-    this.carvingChance = Number($event.chance);
+    const carveData = $event.carveData;
+    const captureData = $event.captureData;
+    const tailcutData = $event.tailCarveData;
+
+    if (carveData) {
+      this.carvingChance = Number(carveData.chance);
+    }
+    if (captureData) {
+      this.captureChance = Number(captureData.chance);
+    }
+    if (tailcutData) {
+      this.tailCarveChance = Number(tailcutData.chance);
+    }
     this.calculate();
   }
+  //TODO: MH Game changen
 
-  receiveCaptureInfo($event: any) {
-    console.log('angekommen');
-    if ($event) {
-      this.captureChance = this.calculateCaptureChance($event.chance);
-    } else {
-      this.captureChance = 0;
-    }
+  calculateCaptureChance() {
+    const chance = this.captureChance / 100;
+    const chanceThirdSlot = 0.69;
+
+    // Probability of not getting the item in one slot
+    const noItemInSlot = 1 - chance;
+
+    // Probability of not getting the item in two slots
+    const noItemInTwoSlots = noItemInSlot * noItemInSlot;
+
+    // Probability of getting the item in at least one of the two slots
+    const itemInTwoSlots = 1 - noItemInTwoSlots;
+
+    // Probability of not getting the item in three slots
+    const noItemInThreeSlots = noItemInSlot * noItemInSlot * noItemInSlot;
+
+    // Probability of getting the item in at least one of the three slots
+    const itemInThreeSlots = 1 - noItemInThreeSlots;
+
+    // Overall probability
+    const overallProbability =
+      itemInTwoSlots * (1 - chanceThirdSlot) +
+      itemInThreeSlots * chanceThirdSlot;
+
+    return overallProbability * 100;
   }
 
-  //TODO: Capture chance calculaten (2 Slots mit der Chance mit ner bestimmten chance auf 3 slots)
-  //TODO: Capture Chance mit einem Cut vom Tail berechnen
+  calculateCaptureChanceWithTailCut() {
+    const chanceCapture = this.calculateCaptureChance() / 100;
+    const chanceTail = this.tailCarveChance / 100;
+    // Berechne die kombinierte Wahrscheinlichkeit
+    const combinedChance = chanceCapture + (1 - chanceCapture) * chanceTail;
 
-  calculateCaptureChance(chance: number) {
-    1 - 0.982 * (1 - 0.02 * 0.69);
-    return chance;
+    // Konvertiere das Ergebnis zurück in Prozent
+    return combinedChance * 100;
+  }
+
+  //Events
+
+  onInputChange(value: string) {
+    this.carvingChance = Number(value);
+  }
+
+  onCarveCountChange(value: string) {
+    this.carvingCount = Number(value);
+  }
+  onTailCarveChange(value: string) {
+    this.tailCarveChance = Number(value);
+  }
+
+  onCaptureChanceChange(value: string) {
+    this.captureChance = Number(value);
   }
 }

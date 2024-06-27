@@ -1,6 +1,6 @@
 <h2>Timo's carving calculator</h2>
 <div class="hbox">
-  <div style="width: 550px">
+  <div style="width: 250px; margin: 5px 0px 5px 0px">
     <div>
       <label class="label">Carving Chance:</label>
       <input
@@ -35,26 +35,61 @@
       />%
     </div>
     <div>
+      <label class="label">Chance on Capture:</label>
+      <input
+        type="text"
+        placeholder="%"
+        [(ngModel)]="captureChance"
+        (ngModelChange)="onCaptureChanceChange($event)"
+        class="inputfield"
+        style="width: 50px"
+      />%
+    </div>
+    <div>
       <button class="button" (click)="calculate()">Berechnen</button>
     </div>
-
-    <div style="margin-top: 5px">
-      Wahrscheinlichkeit für das Item on Kill (mit Tailcut):
-      <div style="display: inline-flex; font-weight: bold; font-size: larger">
-        {{ chanceWithKill }}% ({{ chanceWithKillTailCut }}%)
-      </div>
-    </div>
-    <div *ngIf="this.captureChance > 0" style="margin-top: 5px">
-      Wahrscheinlichkeit für das Item bei Capture:
-      <div style="display: inline-flex; font-weight: bold; font-size: larger">
-        {{ captureChance }}%
-      </div>
-    </div>
   </div>
-  <div style="margin-top: 5px">
-    <app-search
-      (sendCalcTask)="receiveCalcTask($event)"
-      (sendCaptureInfo)="receiveCaptureInfo($event)"
-    ></app-search>
+  <div>
+    <div style="font-weight: bold; margin: 5px 0px 5px 0px">
+      Wahrscheinlichkeiten (Tail Carve)
+    </div>
+    <table>
+      <tr>
+        <td>Carves:</td>
+        <td style="font-weight: bold; font-size: larger">
+          {{ sChanceWithKill }}% (
+          <ng-container
+            style="display: inline"
+            *ngIf="sChanceWithCaptureAndTail !== sChanceWithCapture"
+          >
+            {{ sChanceWithKillTailCut }}%
+          </ng-container>
+          )
+        </td>
+      </tr>
+      <tr>
+        <td>Capture:</td>
+        <td style="font-weight: bold; font-size: larger">
+          <ng-container *ngIf="sChanceWithCapture !== '0'">
+            {{ sChanceWithCapture }}% (
+            <ng-container
+              style="display: inline"
+              *ngIf="sChanceWithCaptureAndTail !== sChanceWithCapture"
+            >
+              {{ sChanceWithCaptureAndTail }}%
+            </ng-container>
+            )
+          </ng-container>
+          <ng-container *ngIf="sChanceWithCapture == '0'">
+            Keine Daten
+          </ng-container>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div style="width: 250px">
+    <div style="margin-top: 5px">
+      <app-search (sendCalcTask)="receiveCalcTask($event)"></app-search>
+    </div>
   </div>
 </div>
