@@ -40,7 +40,10 @@ export class CarvecalcComponent {
   constructor(private fileService: FileService) {}
 
   calculate(otherTypes?: Details[]) {
-    const calculatedKillChance = this.calculateOnCarve();
+    const calculatedKillChance = this.calculateOnCarve(
+      this.carvingChance,
+      this.carvingCount
+    );
     const calculatedCaptureItemChance = this.calculateCaptureChance();
     let calculatedKillTailCutChance = 0;
     let calculatedCaptureTailCutChance = 0;
@@ -76,19 +79,56 @@ export class CarvecalcComponent {
     this.aOtherTypes = otherTypes ? otherTypes : [];
   }
 
-  calculateOnCarve() {
-    const probability =
-      1 - Math.pow(1 - this.carvingChance / 100, this.carvingCount);
+  calculateOnCarve(chance: number, count: number) {
+    const probability = 1 - Math.pow(1 - chance / 100, count);
     return probability * 100;
   }
 
   calculateOnCarveWithTailCut() {
-    const chanceKill = Math.pow(
-      1 - this.carvingChance / 100,
-      this.carvingCount
-    );
-    const chanceKillTailCut = this.calculateTailCarveChance() / 100;
-    return 1 - chanceKill * chanceKillTailCut;
+    const percentageCarve =
+      this.calculateOnCarve(this.carvingChance, this.carvingCount) / 100;
+    const chanceKillTailCut =
+      this.calculateOnCarve(this.tailCarveChance, this.tailCarveCount) / 100;
+    return percentageCarve + (1 - percentageCarve) * chanceKillTailCut;
+  }
+
+  calculateCaptureChance() {
+    const chance = this.captureChance / 100;
+    const chanceThirdSlot = 0.69;
+
+    // Probability of not getting the item in one slot
+    const noItemInSlot = 1 - chance;
+
+    // Probability of not getting the item in two slots
+    const noItemInTwoSlots = noItemInSlot * noItemInSlot;
+
+    // Probability of getting the item in at least one of the two slots
+    const itemInTwoSlots = 1 - noItemInTwoSlots;
+
+    // Probability of not getting the item in three slots
+    const noItemInThreeSlots = noItemInSlot * noItemInSlot * noItemInSlot;
+
+    // Probability of getting the item in at least one of the three slots
+    const itemInThreeSlots = 1 - noItemInThreeSlots;
+
+    // Overall probability
+    const overallProbability =
+      itemInTwoSlots * (1 - chanceThirdSlot) +
+      itemInThreeSlots * chanceThirdSlot;
+
+    return overallProbability * 100;
+  }
+
+  calculateCaptureChanceWithTailCut() {
+    const chanceCapture = this.calculateCaptureChance() / 100;
+    console.log('cap', chanceCapture);
+    const chanceTail =
+      this.calculateOnCarve(this.tailCarveChance, this.tailCarveCount) / 100;
+    // Berechne die kombinierte Wahrscheinlichkeit
+    const combinedChance = chanceCapture + (1 - chanceCapture) * chanceTail;
+
+    // Konvertiere das Ergebnis zurück in Prozent
+    return combinedChance * 100;
   }
 
   receiveCalcTask($event: any) {
@@ -150,49 +190,6 @@ export class CarvecalcComponent {
     }
 
     this.calculate(otherTypes);
-  }
-
-  calculateCaptureChance() {
-    const chance = this.captureChance / 100;
-    const chanceThirdSlot = 0.69;
-
-    // Probability of not getting the item in one slot
-    const noItemInSlot = 1 - chance;
-
-    // Probability of not getting the item in two slots
-    const noItemInTwoSlots = noItemInSlot * noItemInSlot;
-
-    // Probability of getting the item in at least one of the two slots
-    const itemInTwoSlots = 1 - noItemInTwoSlots;
-
-    // Probability of not getting the item in three slots
-    const noItemInThreeSlots = noItemInSlot * noItemInSlot * noItemInSlot;
-
-    // Probability of getting the item in at least one of the three slots
-    const itemInThreeSlots = 1 - noItemInThreeSlots;
-
-    // Overall probability
-    const overallProbability =
-      itemInTwoSlots * (1 - chanceThirdSlot) +
-      itemInThreeSlots * chanceThirdSlot;
-
-    return overallProbability * 100;
-  }
-
-  calculateTailCarveChance() {
-    const probability =
-      1 - Math.pow(1 - this.tailCarveChance / 100, this.tailCarveCount);
-    return probability * 100;
-  }
-
-  calculateCaptureChanceWithTailCut() {
-    const chanceCapture = this.calculateCaptureChance() / 100;
-    const chanceTail = this.calculateTailCarveChance() / 100;
-    // Berechne die kombinierte Wahrscheinlichkeit
-    const combinedChance = chanceCapture + (1 - chanceCapture) * chanceTail;
-
-    // Konvertiere das Ergebnis zurück in Prozent
-    return combinedChance * 100;
   }
 
   resetView() {
