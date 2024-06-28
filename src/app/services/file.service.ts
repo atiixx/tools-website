@@ -1,23 +1,17 @@
 import { Injectable } from '@angular/core';
-import mh3uItemData from '../../assets/data/mh3u_allitems.json';
-import mh4uItemData from '../../assets/data/mh4u_allitems.json';
-import mhguItemData from '../../assets/data/mhgu_allitems.json';
 import { Details, ItemData } from '../carvecalc/itemdata';
+import { HttpClient, HttpRequest } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FileService {
-  mh3uData: ItemData[] = [];
-  mh4uData: ItemData[] = [];
-  mhguData: ItemData[] = [];
-  constructor() {
-    this.mh3uData = mh3uItemData;
-    this.mh4uData = mh4uItemData;
-    this.mhguData = this.cleanUpMHGUData(mhguItemData);
-  }
+  gist_url =
+    'https://gist.githubusercontent.com/atiixx/11a98d998a1989c1c101ce762b4f6359/raw';
 
-  //TODO: Manche otherTypes sind doppelt drin (zb. wenn man ne chance auf doppelte menge an items hat): bsp: seregios Talon
+  constructor(private http: HttpClient) {}
 
   cleanUpMHGUData(data: any[]): ItemData[] {
     let mhguData: ItemData[] = [];
@@ -54,15 +48,17 @@ export class FileService {
     return mhguData;
   }
 
-  getMH3UData(): ItemData[] {
-    return this.mh3uData;
+  getMH3UDataFromGist(): Observable<ItemData[]> {
+    return this.http.get<ItemData[]>(`${this.gist_url}/mh3u_allitems.json`);
   }
 
-  getMH4UData(): ItemData[] {
-    return this.mh4uData;
+  getMH4UDataFromGist(): Observable<ItemData[]> {
+    return this.http.get<ItemData[]>(`${this.gist_url}/mh4u_allitems.json`);
   }
 
-  getMHGUData(): ItemData[] {
-    return this.mhguData;
+  getMHGUDataFromGist(): Observable<ItemData[]> {
+    return this.http
+      .get<ItemData[]>(`${this.gist_url}/mhgu_allitems.json`)
+      .pipe(map((data: any[]) => this.cleanUpMHGUData(data)));
   }
 }

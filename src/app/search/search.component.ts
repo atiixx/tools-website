@@ -11,11 +11,13 @@ import { CommonModule } from '@angular/common';
 import { Details, ItemData } from '../carvecalc/itemdata';
 import { FormsModule } from '@angular/forms';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatIconModule],
+  imports: [CommonModule, FormsModule, MatIconModule, MatSnackBarModule],
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss',
   providers: [FileService],
@@ -27,11 +29,15 @@ export class SearchComponent implements OnChanges {
   searchResults: ItemData[] = [];
   selectedItem: ItemData | null = null;
   filterString: string = '';
+  loading: boolean = false;
   @Input() game: string | undefined;
 
   @Output() sendCalcTask = new EventEmitter<any>();
 
-  constructor(private fileService: FileService) {}
+  constructor(
+    private fileService: FileService,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.fetchData();
@@ -47,12 +53,25 @@ export class SearchComponent implements OnChanges {
   }
 
   fetchData(): void {
+    this.loading = true;
     if (this.game === 'mh3u') {
-      this.allItems = this.fileService.getMH3UData();
+      this.fileService.getMH3UDataFromGist().subscribe((data) => {
+        this.allItems = data;
+        this.loading = false;
+        this.showPopup();
+      });
     } else if (this.game === 'mh4u') {
-      this.allItems = this.fileService.getMH4UData();
+      this.fileService.getMH4UDataFromGist().subscribe((data) => {
+        this.allItems = data;
+        this.loading = false;
+        this.showPopup();
+      });
     } else if (this.game === 'mhgu') {
-      this.allItems = this.fileService.getMHGUData();
+      this.fileService.getMHGUDataFromGist().subscribe((data) => {
+        this.allItems = data;
+        this.loading = false;
+        this.showPopup();
+      });
     }
   }
   ngOnChanges(changes: SimpleChanges): void {
@@ -158,5 +177,13 @@ export class SearchComponent implements OnChanges {
 
   goToLink() {
     window.open(this.selectedItem!.url, '_blank');
+  }
+
+  showPopup(): void {
+    this.snackBar.open('Daten geladen!', 'Close', {
+      duration: 1000, // Duration in milliseconds
+      horizontalPosition: 'center', // Position on screen
+      verticalPosition: 'bottom', // Position on screen
+    });
   }
 }

@@ -4,7 +4,6 @@ import { FileService } from '../services/file.service';
 import { SearchComponent } from '../search/search.component';
 import { CommonModule } from '@angular/common';
 import { Details } from './itemdata';
-
 @Component({
   selector: 'app-carvecalc',
   standalone: true,
