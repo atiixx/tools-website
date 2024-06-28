@@ -13,7 +13,7 @@ export class FileService {
 
   constructor(private http: HttpClient) {}
 
-  cleanUpMHGUData(data: any[]): ItemData[] {
+  cleanUpData(data: any[]): ItemData[] {
     let mhguData: ItemData[] = [];
 
     for (let i = 0; i < data.length; i++) {
@@ -48,17 +48,30 @@ export class FileService {
     return mhguData;
   }
 
+  saveJson(data: any) {
+    let json = JSON.stringify(data);
+    let blob = new Blob([json], { type: 'application/json' });
+    let a = document.createElement('a');
+    a.download = `${data.name}.json`;
+    a.href = window.URL.createObjectURL(blob);
+    a.click();
+  }
+
   getMH3UDataFromGist(): Observable<ItemData[]> {
-    return this.http.get<ItemData[]>(`${this.gist_url}/mh3u_allitems.json`);
+    return this.http
+      .get<ItemData[]>(`${this.gist_url}/mh3u_allitems.json`)
+      .pipe(map((data: any[]) => this.cleanUpData(data)));
   }
 
   getMH4UDataFromGist(): Observable<ItemData[]> {
-    return this.http.get<ItemData[]>(`${this.gist_url}/mh4u_allitems.json`);
+    return this.http
+      .get<ItemData[]>(`${this.gist_url}/mh4u_allitems.json`)
+      .pipe(map((data: any[]) => this.cleanUpData(data)));
   }
 
   getMHGUDataFromGist(): Observable<ItemData[]> {
     return this.http
       .get<ItemData[]>(`${this.gist_url}/mhgu_allitems.json`)
-      .pipe(map((data: any[]) => this.cleanUpMHGUData(data)));
+      .pipe(map((data: any[]) => this.cleanUpData(data)));
   }
 }

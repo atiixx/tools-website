@@ -30,6 +30,7 @@ export class SearchComponent implements OnChanges {
   selectedItem: ItemData | null = null;
   filterString: string = '';
   loading: boolean = false;
+  monstersWithSpecialCarveCount = this.getSpecialMonstersMH4U();
   @Input() game: string | undefined;
 
   @Output() sendCalcTask = new EventEmitter<any>();
@@ -39,8 +40,75 @@ export class SearchComponent implements OnChanges {
     private snackBar: MatSnackBar
   ) {}
 
-  ngOnInit(): void {
-    //this.fetchData();
+  getSpecialMonstersMH4U() {
+    const list = [
+      {
+        monster_name: 'Gravios, Apex Gravios, Black Gravios',
+        body_carves: 4,
+        tail_carves: 2,
+      },
+      {
+        monster_name: 'Deviljho, Apex Deviljho, Savage Deviljho',
+        body_carves: 4,
+        tail_carves: 2,
+      },
+      {
+        monster_name: 'Akantor',
+        body_carves: 4,
+        tail_carves: 2,
+      },
+      {
+        monster_name: 'Ukanlos',
+        body_carves: 4,
+        tail_carves: 2,
+      },
+      {
+        monster_name: "Dah'ren Mohran",
+        body_carves: 8,
+        mouth_carves: 2,
+      },
+      {
+        monster_name: 'Dalamadur, Shah Dalamadur',
+        body_carves: 8,
+        tail_carves: 1,
+      },
+      {
+        monster_name: 'Gogmazios',
+        body_carves: 6,
+        tail_carves: 2,
+      },
+      {
+        monster_name: 'Monoblos, White Monoblos',
+        body_carves: 4,
+        tail_carves: 2,
+      },
+      {
+        monster_name: 'Kushala Daora',
+        body_carves: 4,
+        tail_carves: 1,
+      },
+      {
+        monster_name: 'Fatalis, Crimson Fatalis, White Fatalis',
+        body_carves: 9,
+        tail_carves: 0,
+      },
+      {
+        monster_name: 'Teostra',
+        body_carves: 4,
+        tail_carves: 1,
+      },
+      {
+        monster_name: 'Chameleos',
+        body_carves: 4,
+        tail_carves: 1,
+      },
+      {
+        monster_name: 'Raging Brachydios',
+        body_carves: 4,
+        tail_carves: 1,
+      },
+    ];
+    return list;
   }
 
   fetchData(): void {
@@ -123,20 +191,52 @@ export class SearchComponent implements OnChanges {
     return [];
   }
 
+  checkMonsterInListMh(monster_name: string) {
+    let bodyCarveCount;
+    let tailCarveCount;
+    this.monstersWithSpecialCarveCount.forEach((x) => {
+      if (x.monster_name == monster_name) {
+        bodyCarveCount = x.body_carves ? x.body_carves : undefined;
+        tailCarveCount = x.tail_carves ? x.tail_carves : undefined;
+      }
+    });
+    return { bodyCarveCount, tailCarveCount };
+  }
+
   calculateSelected(monster_name: string, rank: string) {
     let carveData: Details | null | undefined = null;
     let captureData: Details | null | undefined = null;
     let tailCarveData: Details | null | undefined = null;
     let additionalData: Details[] | null | undefined = null;
+    let hasMultipleCarvePoints: boolean = false;
+    let nonBodyCarvePoints: Details[] = [];
+    let hasNonBodyCarvePoints: boolean = false;
 
-    carveData = this.selectedItem!.details.filter((x) => {
+    let { bodyCarveCount, tailCarveCount } =
+      this.checkMonsterInListMh(monster_name);
+    const carveDatas = this.selectedItem!.details.filter((x) => {
       return (
-        x.type == 'Body Carve' &&
+        x.type.includes('Carve') &&
+        !x.type.includes('Tail') &&
+        !x.type.includes('Head') &&
         x.monster_name == monster_name &&
         x.rank == rank
       );
-    })[0];
+    });
 
+    nonBodyCarvePoints = carveDatas.filter((x) => {
+      return x.type !== 'Body Carve';
+    });
+    console.log('wat', nonBodyCarvePoints);
+    if (carveDatas.length > 1) {
+      hasMultipleCarvePoints = true;
+    }
+    if (nonBodyCarvePoints.length > 0) {
+      hasNonBodyCarvePoints = true;
+    }
+
+    carveData = carveDatas[0];
+    //this.fileService.saveJson(carveDatas);
     //Does the selected item also has a detail where the type is capture?
     captureData = this.selectedItem!.details.filter((x) => {
       return (
@@ -155,10 +255,12 @@ export class SearchComponent implements OnChanges {
     [0];
     //Does the selected item also has a detail where the type is none of the above?
     additionalData = this.selectedItem!.details.filter((x) => {
+      const isExcludedCarve =
+        !x.type.includes('Carve') || x.type === 'Head Carve';
       return (
         x.type !== 'Tail Carve' &&
         x.type !== 'Capture' &&
-        x.type !== 'Body Carve' &&
+        isExcludedCarve &&
         x.monster_name == monster_name &&
         x.rank == rank
       );
@@ -169,6 +271,10 @@ export class SearchComponent implements OnChanges {
       captureData,
       tailCarveData,
       additionalData,
+      hasMultipleCarvePoints,
+      hasNonBodyCarvePoints,
+      bodyCarveCount,
+      tailCarveCount,
     };
 
     this.sendCalcTask.emit(dataPackage);

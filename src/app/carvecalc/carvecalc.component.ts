@@ -4,10 +4,18 @@ import { FileService } from '../services/file.service';
 import { SearchComponent } from '../search/search.component';
 import { CommonModule } from '@angular/common';
 import { Details } from './itemdata';
+import { MatIcon } from '@angular/material/icon';
+import { PopoverComponent } from '../popover/popover.component';
 @Component({
   selector: 'app-carvecalc',
   standalone: true,
-  imports: [FormsModule, SearchComponent, CommonModule],
+  imports: [
+    FormsModule,
+    SearchComponent,
+    CommonModule,
+    MatIcon,
+    PopoverComponent,
+  ],
   templateUrl: './carvecalc.component.html',
   styleUrl: './carvecalc.component.scss',
   providers: [FileService],
@@ -16,6 +24,7 @@ export class CarvecalcComponent {
   public carvingChance: number = 0;
   public tailCarveChance: number = 0;
   public carvingCount: number = 3;
+  tailCarveCount: number = 1;
   public captureChance: number = 0;
   public otherTypes: Details[] = [];
   public sChanceWithKill: string = '0';
@@ -25,6 +34,8 @@ export class CarvecalcComponent {
   public aOtherTypes: Details[] = [];
 
   public game: string = 'mh4u';
+  hasMultipleCarvePoints: boolean = false;
+  hasNonStandardBodyCarvePoints: boolean = false;
 
   constructor(private fileService: FileService) {}
 
@@ -76,7 +87,7 @@ export class CarvecalcComponent {
       1 - this.carvingChance / 100,
       this.carvingCount
     );
-    const chanceKillTailCut = 1 - this.tailCarveChance / 100;
+    const chanceKillTailCut = this.calculateTailCarveChance() / 100;
     return 1 - chanceKill * chanceKillTailCut;
   }
 
@@ -85,6 +96,35 @@ export class CarvecalcComponent {
     const captureData = $event.captureData;
     const tailcutData = $event.tailCarveData;
     const additionalData = $event.additionalData;
+    const multipleCarvePoints = $event.hasMultipleCarvePoints;
+    const nonBodyCarvePoints = $event.hasNonBodyCarvePoints;
+    const bodyCarveCount = $event.bodyCarveCount;
+    const tailCarveCount = $event.tailCarveCount;
+
+    if (bodyCarveCount) {
+      this.carvingCount = bodyCarveCount;
+    } else {
+      this.carvingCount = 3;
+    }
+
+    if (tailCarveCount) {
+      this.tailCarveCount = tailCarveCount;
+    } else {
+      this.tailCarveCount = 1;
+    }
+
+    if (multipleCarvePoints) {
+      this.hasMultipleCarvePoints = true;
+    } else {
+      this.hasMultipleCarvePoints = false;
+    }
+
+    if (nonBodyCarvePoints) {
+      this.hasNonStandardBodyCarvePoints = true;
+    } else {
+      this.hasNonStandardBodyCarvePoints = false;
+    }
+
     let otherTypes: Details[] = [];
 
     if (carveData) {
@@ -139,9 +179,15 @@ export class CarvecalcComponent {
     return overallProbability * 100;
   }
 
+  calculateTailCarveChance() {
+    const probability =
+      1 - Math.pow(1 - this.tailCarveChance / 100, this.tailCarveCount);
+    return probability * 100;
+  }
+
   calculateCaptureChanceWithTailCut() {
     const chanceCapture = this.calculateCaptureChance() / 100;
-    const chanceTail = this.tailCarveChance / 100;
+    const chanceTail = this.calculateTailCarveChance() / 100;
     // Berechne die kombinierte Wahrscheinlichkeit
     const combinedChance = chanceCapture + (1 - chanceCapture) * chanceTail;
 
@@ -154,6 +200,7 @@ export class CarvecalcComponent {
     this.tailCarveChance = 0;
     this.captureChance = 0;
     this.carvingCount = 3;
+    this.tailCarveCount = 1;
     this.otherTypes = [];
     this.sChanceWithKill = '0';
     this.sChanceWithKillTailCut = '0';
@@ -178,6 +225,10 @@ export class CarvecalcComponent {
   }
   onTailCarveChange(value: string) {
     this.tailCarveChance = Number(value);
+  }
+
+  onTailCarveCountChange(value: string) {
+    this.tailCarveCount = Number(value);
   }
 
   onCaptureChanceChange(value: string) {

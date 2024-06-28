@@ -60,6 +60,28 @@
         </td>
       </tr>
     </table>
+    <div
+      *ngIf="hasMultipleCarvePoints || hasNonStandardBodyCarvePoints"
+      style="margin-top: 2px"
+    >
+      <span style="color: red"
+        >!!Special Monsterpart!!
+        <app-popover
+          ><div style="color: black; font-size: small">
+            <div style="color: black">
+              Wahrscheinlichkeiten können abweichen durch:
+            </div>
+            <div *ngIf="hasMultipleCarvePoints" style="color: black">
+              Mehrere Carve Points.
+            </div>
+            <div *ngIf="hasNonStandardBodyCarvePoints" style="color: black">
+              Carve an anderer Stelle als Body.
+            </div>
+            <div style="color: black">Bitte Kiranico für Details checken.</div>
+          </div></app-popover
+        >
+      </span>
+    </div>
     <div *ngIf="aOtherTypes.length > 0" style="margin-top: 10px">
       <span>Erhöhe die Chance weiter durch: </span>
       <ul *ngFor="let type of aOtherTypes">
@@ -102,6 +124,17 @@
         class="inputfield"
         style="width: 50px"
       />%
+    </div>
+    <div>
+      <label class="label">Anzahl Tail Carves:</label>
+      <input
+        type="text"
+        placeholder="%"
+        [(ngModel)]="tailCarveCount"
+        (ngModelChange)="onTailCarveCountChange($event)"
+        class="inputfield"
+        style="width: 50px"
+      />
     </div>
     <div>
       <label class="label">Chance on Capture:</label>
