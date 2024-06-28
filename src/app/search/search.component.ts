@@ -40,16 +40,7 @@ export class SearchComponent implements OnChanges {
   ) {}
 
   ngOnInit(): void {
-    this.fetchData();
-    this.itemsWithCaptures = this.allItems.filter((item) =>
-      item.details.find((x) => x.type == 'Capture')
-    );
-    this.itemsWithCarves = this.allItems.filter((item) =>
-      item.details.find((x) => x.type != 'Body Carve')
-    );
-    this.itemsWithCaptures = this.allItems.filter((item) =>
-      item.details.find((x) => x.type == 'Tail Carve')
-    );
+    //this.fetchData();
   }
 
   fetchData(): void {
@@ -73,6 +64,19 @@ export class SearchComponent implements OnChanges {
         this.showPopup();
       });
     }
+    this.setData();
+  }
+
+  setData() {
+    this.itemsWithCaptures = this.allItems.filter((item) =>
+      item.details.find((x) => x.type == 'Capture')
+    );
+    this.itemsWithCarves = this.allItems.filter((item) =>
+      item.details.find((x) => x.type != 'Body Carve')
+    );
+    this.itemsWithCaptures = this.allItems.filter((item) =>
+      item.details.find((x) => x.type == 'Tail Carve')
+    );
   }
   ngOnChanges(changes: SimpleChanges): void {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
