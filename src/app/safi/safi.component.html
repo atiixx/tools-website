@@ -1,7 +1,7 @@
 <h2>MH:W Event Info</h2>
 <div class="wrapper">
   <div>
-    <div>Welches Event läuft aktuell?</div>
+    <div>Which Event is currently running?</div>
     <div *ngIf="safiEventCurrently; else kulveBlock" class="columnFlexBox">
       <img class="monstericon" src="assets/icons/safi.png" />
       <div style="color: red">Safi'Jiiva</div>
@@ -14,7 +14,7 @@
     </ng-template>
   </div>
   <div class="answerBox">
-    Event wechselt am <br />
+    Event changes on <br />
     {{ eventEnd }}
   </div>
 </div>

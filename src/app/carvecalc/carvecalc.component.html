@@ -25,7 +25,7 @@
   </div>
   <div>
     <div style="font-weight: bold; margin: 5px 0px 5px 0px">
-      Wahrscheinlichkeiten (Tail Carve)
+      Probabilites (Tail Carve)
     </div>
     <table>
       <tr>
@@ -55,7 +55,7 @@
             )
           </ng-container>
           <ng-container *ngIf="sChanceWithCapture == '0'">
-            Keine Daten
+            No Data
           </ng-container>
         </td>
       </tr>
@@ -68,22 +68,20 @@
         >!!Special Monsterpart!!
         <app-popover
           ><div style="color: black; font-size: small">
-            <div style="color: black">
-              Wahrscheinlichkeiten können abweichen durch:
-            </div>
+            <div style="color: black">Probabilites could differ due to:</div>
             <div *ngIf="hasMultipleCarvePoints" style="color: black">
-              Mehrere Carve Points.
+              Multiple Carve Points.
             </div>
             <div *ngIf="hasNonStandardBodyCarvePoints" style="color: black">
-              Carve an anderer Stelle als Body.
+              Carve point something other than body.
             </div>
-            <div style="color: black">Bitte Kiranico für Details checken.</div>
+            <div style="color: black">Please check Kiranico for details.</div>
           </div></app-popover
         >
       </span>
     </div>
     <div *ngIf="aOtherTypes.length > 0" style="margin-top: 10px">
-      <span>Erhöhe die Chance weiter durch: </span>
+      <span>Raise the chance by: </span>
       <ul *ngFor="let type of aOtherTypes">
         <li style="margin-left: 15px">
           {{ type }}
@@ -104,7 +102,7 @@
       />%
     </div>
     <div>
-      <label class="label">Anzahl Carves:</label>
+      <label class="label">Amount of Carves:</label>
       <input
         type="text"
         placeholder="%"
@@ -126,7 +124,7 @@
       />%
     </div>
     <div>
-      <label class="label">Anzahl Tail Carves:</label>
+      <label class="label">Amount of Tail Carves:</label>
       <input
         type="text"
         placeholder="%"
@@ -148,7 +146,7 @@
       />%
     </div>
     <div>
-      <button class="button" (click)="calculate()">Berechnen</button>
+      <button class="button" (click)="calculate()">Calculate</button>
     </div>
   </div>
 </div>
