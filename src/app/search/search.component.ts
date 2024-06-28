@@ -195,7 +195,7 @@ export class SearchComponent implements OnChanges {
     let bodyCarveCount;
     let tailCarveCount;
     this.monstersWithSpecialCarveCount.forEach((x) => {
-      if (x.monster_name == monster_name) {
+      if (x.monster_name.includes(monster_name)) {
         bodyCarveCount = x.body_carves ? x.body_carves : undefined;
         tailCarveCount = x.tail_carves ? x.tail_carves : undefined;
       }
@@ -227,7 +227,7 @@ export class SearchComponent implements OnChanges {
     nonBodyCarvePoints = carveDatas.filter((x) => {
       return x.type !== 'Body Carve';
     });
-    console.log('wat', nonBodyCarvePoints);
+
     if (carveDatas.length > 1) {
       hasMultipleCarvePoints = true;
     }
