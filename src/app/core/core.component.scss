@@ -77,3 +77,9 @@ nav ul li a.active {
   color: #007bff; /* Active link color */
   background-color: #1f1f1f;
 }
+
+@media screen and (max-width: 768px) {
+  nav {
+    display: none;
+  }
+}
