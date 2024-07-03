@@ -27,7 +27,7 @@
     <table class="table-container">
       <tr>
         <td>Carves:</td>
-        <td style="font-weight: bold; font-size: larger; padding-left: 3px">
+        <td class="table-td">
           {{ sChanceWithKill }}% (
           <ng-container
             style="display: inline"
@@ -40,7 +40,7 @@
       </tr>
       <tr>
         <td>Capture:</td>
-        <td style="font-weight: bold; font-size: larger; padding-left: 3px">
+        <td class="table-td">
           <ng-container *ngIf="sChanceWithCapture !== '0'">
             {{ sChanceWithCapture }}% (
             <ng-container

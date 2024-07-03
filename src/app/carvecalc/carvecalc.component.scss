@@ -31,6 +31,13 @@
 .table-container {
   min-width: fit-content;
 }
+
+.table-td {
+  font-weight: bold;
+  font-size: larger;
+  padding-left: 3px;
+  white-space: nowrap;
+}
 @media screen and (max-width: 600px) {
   .buttonWrapper {
     display: flex;
