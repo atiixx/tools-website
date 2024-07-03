@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Details, ItemData } from '../carvecalc/itemdata';
+import { Details, ItemData } from '../monster-hunter/carvecalc/itemdata';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';

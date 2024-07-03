@@ -8,16 +8,22 @@
       />
       <div class="pagename">Jona' Tools</div>
     </div>
-    <div class="date">{{ date }}</div>
     <nav>
-      <!-- Add your navigation items here -->
+      <ul>
+        <li>
+          <a routerLink="/monster-hunter" routerLinkActive="active"
+            >Monster Hunter</a
+          >
+        </li>
+        <li>
+          <a routerLink="/api-stuff" routerLinkActive="active">API Stuff</a>
+        </li>
+      </ul>
     </nav>
+    <div class="date">{{ date }}</div>
   </header>
 
   <main class="main">
-    <app-carvecalc></app-carvecalc>
-    <app-safi></app-safi>
-
     <router-outlet></router-outlet>
     <!-- This will render the routed component content -->
   </main>

@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { FileService } from '../services/file.service';
+import { FileService } from '../../services/file.service';
 import { SearchComponent } from '../search/search.component';
 import { CommonModule } from '@angular/common';
 import { Details } from './itemdata';
 import { MatIcon } from '@angular/material/icon';
-import { PopoverComponent } from '../popover/popover.component';
+import { PopoverComponent } from '../../helper/popover/popover.component';
 @Component({
   selector: 'app-carvecalc',
   standalone: true,
@@ -46,7 +46,6 @@ export class CarvecalcComponent {
     } else {
       this.game = 'mh4u';
     }
-    console.log(this.game);
   }
 
   calculate(otherTypes?: Details[]) {
@@ -131,7 +130,6 @@ export class CarvecalcComponent {
 
   calculateCaptureChanceWithTailCut() {
     const chanceCapture = this.calculateCaptureChance() / 100;
-    console.log('cap', chanceCapture);
     const chanceTail =
       this.calculateOnCarve(this.tailCarveChance, this.tailCarveCount) / 100;
     // Berechne die kombinierte Wahrscheinlichkeit

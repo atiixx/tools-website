@@ -6,7 +6,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FileService } from '../services/file.service';
+import { FileService } from '../../services/file.service';
 import { CommonModule } from '@angular/common';
 import { Details, ItemData } from '../carvecalc/itemdata';
 import { FormsModule } from '@angular/forms';
