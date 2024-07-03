@@ -8,7 +8,7 @@
   position: absolute;
   overflow: auto;
   scrollbar-gutter: stable;
-  height: fit-content;
+  min-height: fit-content;
   max-height: 250px;
 }
 
@@ -20,13 +20,15 @@
 
 .table-container {
   overflow: auto;
-  height: 150px;
+  overflow-x: hidden;
+  max-height: 150px;
+  height: fit-content;
 }
 
 table {
   border-collapse: collapse;
   border-spacing: 0;
-  overflow-x: hidden;
+
   margin-top: 5px;
   width: 240px;
 }
