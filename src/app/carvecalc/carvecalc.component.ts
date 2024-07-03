@@ -40,9 +40,15 @@ export class CarvecalcComponent {
   constructor(private fileService: FileService) {}
 
   ngOnInit() {
-  this.game = localStorage.getItem('selectedGame') || 'mh4u';
+    const currentGame = localStorage.getItem('selectedGame');
+    if (currentGame) {
+      this.game = JSON.parse(currentGame);
+    } else {
+      this.game = 'mh4u';
+    }
+    console.log(this.game);
   }
-  
+
   calculate(otherTypes?: Details[]) {
     const calculatedKillChance = this.calculateOnCarve(
       this.carvingChance,
