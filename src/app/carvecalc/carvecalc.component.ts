@@ -39,6 +39,10 @@ export class CarvecalcComponent {
 
   constructor(private fileService: FileService) {}
 
+  ngOnInit() {
+  this.game = localStorage.getItem('selectedGame') || 'mh4u';
+  }
+  
   calculate(otherTypes?: Details[]) {
     const calculatedKillChance = this.calculateOnCarve(
       this.carvingChance,
@@ -209,6 +213,7 @@ export class CarvecalcComponent {
   //Events
 
   public onGameChange($event: any) {
+    localStorage.setItem('selectedGame', JSON.stringify($event));
     this.game = $event;
     this.resetView();
   }

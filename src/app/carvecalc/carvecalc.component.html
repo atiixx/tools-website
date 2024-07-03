@@ -1,15 +1,5 @@
 <h2>
-  Timo's carving calculator<select
-    name="games"
-    id="games"
-    (ngModelChange)="onGameChange($event)"
-    [(ngModel)]="game"
-    style="margin-left: 15px"
-  >
-    <option value="mh3u">MH3U</option>
-    <option value="mh4u">MH4U</option>
-    <option value="mhgu">MHGU</option>
-  </select>
+  Timo's carving calculator
 </h2>
 
 <div class="hbox">
@@ -20,6 +10,17 @@
           (sendCalcTask)="receiveCalcTask($event)"
           [game]="game"
         ></app-search>
+        <select
+    name="games"
+    id="games"
+    (ngModelChange)="onGameChange($event)"
+    [(ngModel)]="game"
+    class="gameSelection"
+  >
+    <option value="mh3u">MH3U</option>
+    <option value="mh4u">MH4U</option>
+    <option value="mhgu">MHGU</option>
+  </select>
       </div>
     </div>
   </div>

@@ -4,8 +4,16 @@
   margin-bottom: 15px;
 }
 
-select {
-  width: 150px;
-  height: auto;
+.gameSelection {
+  width: 200px;
+  height: 45px;
   font-size: large;
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  margin: 3px;
 }
+
