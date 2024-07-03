@@ -1,11 +1,13 @@
 <div>
   <div class="searchBarWrapper">
     <input
+      #myInputRef
       type="text"
       (input)="search()"
       placeholder="Search items..."
       style="width: 200px"
       [(ngModel)]="filterString"
+      (click)="myInputRef.select()"
     />
     <button
       *ngIf="this.selectedItem"
