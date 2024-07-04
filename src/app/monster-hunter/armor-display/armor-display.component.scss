@@ -1,0 +1,23 @@
+.maleArmor {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.rowFlexBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.armorImage {
+  width: 6rem;
+  height: 6rem;
+  margin: 1px;
+}
+.femaleArmor {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
