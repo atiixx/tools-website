@@ -3,6 +3,19 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: rgba(255, 255, 255, 0.153);
+  border-radius: 3px;
+  padding: 1px;
+}
+
+.femaleArmor {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.144);
+  border-radius: 3px;
+  padding: 1px;
 }
 .rowFlexBox {
   display: flex;
@@ -15,9 +28,21 @@
   height: 6rem;
   margin: 1px;
 }
-.femaleArmor {
+
+.resistanceList {
+  list-style: none;
+  min-height: fit-content;
+  max-height: 250px;
+}
+
+.skillList {
+  list-style: none;
+  min-height: fit-content;
+  max-height: 250px;
+}
+
+.listWrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  gap: 10px;
 }

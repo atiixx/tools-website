@@ -62,17 +62,49 @@ export class ArmorDisplayComponent {
   fLegs: string = '';
   fFeet: string = '';
   fArms: string = '';
+  sRank: string = '';
+  aSkills: string[] = [];
+  aResistances: string[] = [];
+  defense: number = 0;
 
   //TODO: change armor only once a day
-  //TODO: make image directive to check for content (GPT)
   //TODO: Add additional armor stats
   //TODO: Save armor to local storage ?
 
   constructor(private http: HttpService) {}
 
   ngOnInit(): void {
-    let randomNumber: number = Math.floor(Math.random() * (300 - 0 + 1) + 0);
-    this.fetchArmorSet(randomNumber);
+    this.callFetchArmorSetOnceADay();
+  }
+  callFetchArmorSetOnceADay() {
+    const nextMidnightStr = localStorage.getItem('nextFetchArmorSetCall');
+    const nextMidnight = nextMidnightStr
+      ? new Date(nextMidnightStr)
+      : this.calculateNextMidnight();
+    const now = new Date();
+
+    if (now >= nextMidnight) {
+      let randomNumber: number = Math.floor(Math.random() * (1676 - 0 + 1) + 0);
+      try {
+        this.fetchArmorSet(randomNumber);
+        const newNextMidnight = this.calculateNextMidnight();
+        localStorage.setItem(
+          'nextFetchArmorSetCall',
+          newNextMidnight.toISOString()
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
+  private calculateNextMidnight(): Date {
+    const now = new Date();
+    const nextMidnight = new Date(now);
+    nextMidnight.setDate(now.getDate() + 1);
+    nextMidnight.setHours(0, 0, 0, 0);
+    localStorage.setItem('nextFetchArmorSetCall', nextMidnight.toISOString());
+    return nextMidnight;
   }
 
   fetchArmorSet(randomNumber: number) {
@@ -80,56 +112,122 @@ export class ArmorDisplayComponent {
       .get(`https://mhw-db.com/armor/sets/${randomNumber}`)
       .subscribe((data) => {
         const armor = data as ArmorData;
-        if (
+        console.log(armor);
+        const hasAssets =
           armor.pieces.filter((armorPiece) => armorPiece.assets != null)
-            .length == 0
-        ) {
+            .length > 0;
+        if (!hasAssets) {
           let randomNumber: number = Math.floor(
             Math.random() * (300 - 0 + 1) + 0
           );
           this.fetchArmorSet(randomNumber);
+          return;
         }
-        armor.pieces.forEach((armorPiece) => {
-          console.log(armorPiece);
-          if (armorPiece.type === 'head') {
-            this.mHead = armorPiece.assets.imageMale
-              ? armorPiece.assets.imageMale
-              : '';
-            this.fHead = armorPiece.assets.imageFemale
-              ? armorPiece.assets.imageFemale
-              : '';
-          } else if (armorPiece.type === 'chest') {
-            this.mBody = armorPiece.assets.imageMale
-              ? armorPiece.assets.imageMale
-              : '';
-            this.fBody = armorPiece.assets.imageFemale
-              ? armorPiece.assets.imageFemale
-              : '';
-          } else if (armorPiece.type === 'waist') {
-            this.mLegs = armorPiece.assets.imageMale
-              ? armorPiece.assets.imageMale
-              : '';
-            this.fLegs = armorPiece.assets.imageFemale
-              ? armorPiece.assets.imageFemale
-              : '';
-          } else if (armorPiece.type === 'legs') {
-            this.mFeet = armorPiece.assets.imageMale
-              ? armorPiece.assets.imageMale
-              : '';
-            this.fFeet = armorPiece.assets.imageFemale
-              ? armorPiece.assets.imageFemale
-              : '';
-          } else if (armorPiece.type === 'gloves') {
-            this.mArms = armorPiece.assets.imageMale
-              ? armorPiece.assets.imageMale
-              : '';
-            this.fArms = armorPiece.assets.imageFemale
-              ? armorPiece.assets.imageFemale
-              : '';
-          }
-        });
+        this.setAssetURLs(armor);
+        this.calculateSkills(armor);
+        this.calculateResistances(armor);
+        this.calculateDefense(armor);
+        this.sRank = armor.rank == 'high' ? 'HR' : 'LR';
+        if (armor.rank == 'master') {
+          this.sRank = 'MR';
+        }
 
         this.sTodaysArmorset = armor.name;
       });
+  }
+  calculateDefense(armor: ArmorData) {
+    let defense: number = 0;
+    for (let armorPiece of armor.pieces) {
+      if (armorPiece.defense) {
+        defense = defense + armorPiece.defense.base;
+      }
+    }
+    this.defense = defense;
+  }
+  calculateResistances(armor: ArmorData) {
+    let dragonRes: number = 0;
+    let fireRes: number = 0;
+    let iceRes: number = 0;
+    let thunderRes: number = 0;
+    let waterRes: number = 0;
+
+    for (let armorPiece of armor.pieces) {
+      if (armorPiece.resistances) {
+        dragonRes = dragonRes + armorPiece.resistances.dragon;
+        fireRes = fireRes + armorPiece.resistances.fire;
+        iceRes = iceRes + armorPiece.resistances.ice;
+        thunderRes = thunderRes + armorPiece.resistances.thunder;
+        waterRes = waterRes + armorPiece.resistances.water;
+      }
+    }
+
+    this.aResistances.push('Dragon: ' + dragonRes);
+    this.aResistances.push('Fire: ' + fireRes);
+    this.aResistances.push('Ice: ' + iceRes);
+    this.aResistances.push('Thunder: ' + thunderRes);
+    this.aResistances.push('Water: ' + waterRes);
+  }
+  calculateSkills(armor: ArmorData) {
+    let skills: Map<string, number> = new Map();
+    for (let armorPiece of armor.pieces) {
+      for (let skill of armorPiece.skills) {
+        skills.set(skill.skillName, skill.level);
+      }
+    }
+    console.log(skills.entries());
+    skills.forEach((value, key) => {
+      this.aSkills.push(key + ': ' + value);
+    });
+  }
+  setAssetURLs(armor: ArmorData) {
+    for (let armorPiece of armor.pieces) {
+      if (armorPiece.assets == null) {
+        continue;
+      }
+      if (armorPiece.type === 'head') {
+        this.mHead = armorPiece.assets.imageMale
+          ? armorPiece.assets.imageMale
+          : '';
+        this.fHead = armorPiece.assets.imageFemale
+          ? armorPiece.assets.imageFemale
+          : '';
+      } else if (armorPiece.type === 'chest') {
+        this.mBody = armorPiece.assets.imageMale
+          ? armorPiece.assets.imageMale
+          : '';
+        this.fBody = armorPiece.assets.imageFemale
+          ? armorPiece.assets.imageFemale
+          : '';
+      } else if (armorPiece.type === 'waist') {
+        this.mLegs = armorPiece.assets.imageMale
+          ? armorPiece.assets.imageMale
+          : '';
+        this.fLegs = armorPiece.assets.imageFemale
+          ? armorPiece.assets.imageFemale
+          : '';
+      } else if (armorPiece.type === 'legs') {
+        this.mFeet = armorPiece.assets.imageMale
+          ? armorPiece.assets.imageMale
+          : '';
+        this.fFeet = armorPiece.assets.imageFemale
+          ? armorPiece.assets.imageFemale
+          : '';
+      } else if (armorPiece.type === 'gloves') {
+        this.mArms = armorPiece.assets.imageMale
+          ? armorPiece.assets.imageMale
+          : '';
+        this.fArms = armorPiece.assets.imageFemale
+          ? armorPiece.assets.imageFemale
+          : '';
+      }
+    }
+  }
+
+  onImageChecked(hasPixels: boolean) {
+    if (hasPixels) {
+      console.log('Image has pixels');
+    } else {
+      console.log('Image is empty');
+    }
   }
 }
