@@ -84,7 +84,7 @@ export class ArmorDisplayComponent {
     const now = new Date();
 
     if (now >= nextMidnight) {
-      let randomNumber: number = Math.floor(Math.random() * (1676 - 0 + 1) + 0);
+      let randomNumber: number = this.getRandomNumber();
       try {
         this.fetchArmorSet(randomNumber);
         const newNextMidnight = this.calculateNextMidnight();
@@ -112,14 +112,11 @@ export class ArmorDisplayComponent {
       .get(`https://mhw-db.com/armor/sets/${randomNumber}`)
       .subscribe((data) => {
         const armor = data as ArmorData;
-        console.log(armor);
         const hasAssets =
           armor.pieces.filter((armorPiece) => armorPiece.assets != null)
             .length > 0;
         if (!hasAssets) {
-          let randomNumber: number = Math.floor(
-            Math.random() * (300 - 0 + 1) + 0
-          );
+          let randomNumber: number = this.getRandomNumber();
           this.fetchArmorSet(randomNumber);
           return;
         }
@@ -127,14 +124,25 @@ export class ArmorDisplayComponent {
         this.calculateSkills(armor);
         this.calculateResistances(armor);
         this.calculateDefense(armor);
-        this.sRank = armor.rank == 'high' ? 'HR' : 'LR';
-        if (armor.rank == 'master') {
-          this.sRank = 'MR';
-        }
-
+        this.getRank(armor);
         this.sTodaysArmorset = armor.name;
       });
   }
+  getRandomNumber(): number {
+    return Math.floor(Math.random() * (1676 - 0 + 1) + 0);
+  }
+  getRank(armor: ArmorData) {
+    if (armor.rank == 'master') {
+      this.sRank = 'MR';
+    }
+    if (armor.rank == 'high') {
+      this.sRank = 'HR';
+    }
+    if (armor.rank == 'low') {
+      this.sRank = 'LR';
+    }
+  }
+
   calculateDefense(armor: ArmorData) {
     let defense: number = 0;
     for (let armorPiece of armor.pieces) {
