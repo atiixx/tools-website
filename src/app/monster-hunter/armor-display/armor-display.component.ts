@@ -67,10 +67,6 @@ export class ArmorDisplayComponent {
   aResistances: string[] = [];
   defense: number = 0;
 
-  //TODO: change armor only once a day
-  //TODO: Add additional armor stats
-  //TODO: Save armor to local storage ?
-
   constructor(private http: HttpService) {}
 
   ngOnInit(): void {
@@ -129,7 +125,7 @@ export class ArmorDisplayComponent {
       });
   }
   getRandomNumber(): number {
-    return Math.floor(Math.random() * (1676 - 0 + 1) + 0);
+    return Math.floor(Math.random() * (371 - 0 + 1) + 0);
   }
   getRank(armor: ArmorData) {
     if (armor.rank == 'master') {
