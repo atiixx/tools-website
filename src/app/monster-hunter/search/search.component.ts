@@ -31,6 +31,9 @@ export class SearchComponent implements OnChanges {
   filterString: string = '';
   loading: boolean = false;
   monstersWithSpecialCarveCount = this.getSpecialMonstersMH4U();
+  mh3uDataIsLoaded = false;
+  mh4uDataIsLoaded = false;
+  mhguDataIsLoaded = false;
   @Input() game: string | undefined;
 
   @Output() sendCalcTask = new EventEmitter<any>();
@@ -113,37 +116,33 @@ export class SearchComponent implements OnChanges {
 
   //TODO: Check if data already loaded
   fetchData(): void {
-    let mh3uDataIsLoaded = false;
-    let mh4uDataIsLoaded = false;
-    let mhguDataIsLoaded = false;
-
     this.loading = true;
     if (this.game === 'mh3u') {
-      if (mh3uDataIsLoaded) {
+      if (this.mh3uDataIsLoaded) {
         return;
       }
       this.fileService.getMH3UDataFromGist().subscribe((data) => {
         this.allItems = data;
         this.loading = false;
         this.showPopup();
-        mh3uDataIsLoaded = true;
-        mh4uDataIsLoaded = false;
-        mhguDataIsLoaded = false;
+        this.mh3uDataIsLoaded = true;
+        this.mh4uDataIsLoaded = false;
+        this.mhguDataIsLoaded = false;
       });
     } else if (this.game === 'mh4u') {
-      if (mh4uDataIsLoaded) {
+      if (this.mh4uDataIsLoaded) {
         return;
       }
       this.fileService.getMH4UDataFromGist().subscribe((data) => {
         this.allItems = data;
         this.loading = false;
         this.showPopup();
-        mh4uDataIsLoaded = true;
-        mh3uDataIsLoaded = false;
-        mhguDataIsLoaded = false;
+        this.mh4uDataIsLoaded = true;
+        this.mh3uDataIsLoaded = false;
+        this.mhguDataIsLoaded = false;
       });
     } else if (this.game === 'mhgu') {
-      if (mhguDataIsLoaded) {
+      if (this.mhguDataIsLoaded) {
         return;
       }
       this.fileService.getMHGUDataFromGist().subscribe((data) => {
@@ -152,9 +151,9 @@ export class SearchComponent implements OnChanges {
         this.showPopup();
       });
 
-      mhguDataIsLoaded = true;
-      mh3uDataIsLoaded = false;
-      mh4uDataIsLoaded = false;
+      this.mhguDataIsLoaded = true;
+      this.mh3uDataIsLoaded = false;
+      this.mh4uDataIsLoaded = false;
     }
     this.setData();
   }
