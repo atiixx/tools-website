@@ -111,26 +111,50 @@ export class SearchComponent implements OnChanges {
     return list;
   }
 
+  //TODO: Check if data already loaded
   fetchData(): void {
+    let mh3uDataIsLoaded = false;
+    let mh4uDataIsLoaded = false;
+    let mhguDataIsLoaded = false;
+
     this.loading = true;
     if (this.game === 'mh3u') {
+      if (mh3uDataIsLoaded) {
+        return;
+      }
       this.fileService.getMH3UDataFromGist().subscribe((data) => {
         this.allItems = data;
         this.loading = false;
         this.showPopup();
+        mh3uDataIsLoaded = true;
+        mh4uDataIsLoaded = false;
+        mhguDataIsLoaded = false;
       });
     } else if (this.game === 'mh4u') {
+      if (mh4uDataIsLoaded) {
+        return;
+      }
       this.fileService.getMH4UDataFromGist().subscribe((data) => {
         this.allItems = data;
         this.loading = false;
         this.showPopup();
+        mh4uDataIsLoaded = true;
+        mh3uDataIsLoaded = false;
+        mhguDataIsLoaded = false;
       });
     } else if (this.game === 'mhgu') {
+      if (mhguDataIsLoaded) {
+        return;
+      }
       this.fileService.getMHGUDataFromGist().subscribe((data) => {
         this.allItems = data;
         this.loading = false;
         this.showPopup();
       });
+
+      mhguDataIsLoaded = true;
+      mh3uDataIsLoaded = false;
+      mh4uDataIsLoaded = false;
     }
     this.setData();
   }
