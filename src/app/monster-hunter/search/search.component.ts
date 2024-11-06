@@ -114,7 +114,7 @@ export class SearchComponent implements OnChanges {
     return list;
   }
 
-  //TODO: Check if data already loaded
+  //TODO: Check if data already loaded still not working
   fetchData(): void {
     this.loading = true;
     if (this.game === 'mh3u') {

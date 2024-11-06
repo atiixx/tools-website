@@ -1,0 +1,23 @@
+.message-list {
+  list-style-type: none;
+}
+
+.message {
+  p {
+    color: black;
+  }
+
+  background-color: beige;
+  min-height: 5rem;
+  border-radius: 5px;
+  padding: 8px;
+  margin-bottom: 6px;
+  margin-right: 10px;
+}
+
+.message-input {
+  width: 25%;
+  text-align: start;
+  min-height: 2rem;
+  padding: 5px;
+}

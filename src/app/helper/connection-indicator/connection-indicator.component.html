@@ -1,0 +1,7 @@
+<div style="display: flex; flex-direction: row; gap: 0.5rem">
+  <div>{{ isConnected ? sConnected : sNotConnected }}</div>
+  <div
+    class="dot"
+    [ngStyle]="{ 'background-color': isConnected ? 'green' : 'red' }"
+  ></div>
+</div>

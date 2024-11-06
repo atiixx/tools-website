@@ -51,6 +51,7 @@ interface ArmorPiecesData {
   styleUrl: './armor-display.component.scss',
 })
 export class ArmorDisplayComponent {
+  currentArmor?: ArmorData = undefined;
   sTodaysArmorset: string = '';
   mHead: string = '';
   mBody: string = '';
@@ -70,8 +71,13 @@ export class ArmorDisplayComponent {
   constructor(private http: HttpService) {}
 
   ngOnInit(): void {
+    this.getCurrentArmorSet();
     this.callFetchArmorSetOnceADay();
   }
+  getCurrentArmorSet() {
+    this.currentArmor = JSON.parse(localStorage.getItem('armorOfTheDay') || '');
+  }
+
   callFetchArmorSetOnceADay() {
     const nextMidnightStr = localStorage.getItem('nextFetchArmorSetCall');
     const nextMidnight = nextMidnightStr
@@ -91,6 +97,8 @@ export class ArmorDisplayComponent {
       } catch (error) {
         console.log(error);
       }
+    } else {
+      this.setTodaysArmor(this.currentArmor);
     }
   }
 
@@ -116,18 +124,26 @@ export class ArmorDisplayComponent {
           this.fetchArmorSet(randomNumber);
           return;
         }
-        this.setAssetURLs(armor);
-        this.calculateSkills(armor);
-        this.calculateResistances(armor);
-        this.calculateDefense(armor);
-        this.getRank(armor);
-        this.sTodaysArmorset = armor.name;
+        localStorage.setItem('armorOfTheDay', JSON.stringify(armor));
+        this.setTodaysArmor(armor);
       });
   }
+
+  setTodaysArmor(armor?: ArmorData) {
+    if (armor) {
+      this.setAssetURLs(armor);
+      this.calculateAndSetSkills(armor);
+      this.calculateAndSetResistances(armor);
+      this.calculateAndSetDefense(armor);
+      this.setRank(armor);
+      this.sTodaysArmorset = armor.name;
+    }
+  }
+
   getRandomNumber(): number {
     return Math.floor(Math.random() * (371 - 0 + 1) + 0);
   }
-  getRank(armor: ArmorData) {
+  setRank(armor: ArmorData) {
     if (armor.rank == 'master') {
       this.sRank = 'MR';
     }
@@ -139,7 +155,7 @@ export class ArmorDisplayComponent {
     }
   }
 
-  calculateDefense(armor: ArmorData) {
+  calculateAndSetDefense(armor: ArmorData) {
     let defense: number = 0;
     for (let armorPiece of armor.pieces) {
       if (armorPiece.defense) {
@@ -148,7 +164,7 @@ export class ArmorDisplayComponent {
     }
     this.defense = defense;
   }
-  calculateResistances(armor: ArmorData) {
+  calculateAndSetResistances(armor: ArmorData) {
     let dragonRes: number = 0;
     let fireRes: number = 0;
     let iceRes: number = 0;
@@ -171,7 +187,7 @@ export class ArmorDisplayComponent {
     this.aResistances.push('Thunder: ' + thunderRes);
     this.aResistances.push('Water: ' + waterRes);
   }
-  calculateSkills(armor: ArmorData) {
+  calculateAndSetSkills(armor: ArmorData) {
     let skills: Map<string, number> = new Map();
     for (let armorPiece of armor.pieces) {
       for (let skill of armorPiece.skills) {

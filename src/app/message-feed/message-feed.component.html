@@ -1,0 +1,44 @@
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <div
+    style="display: flex; flex-direction: row; align-items: center; gap: 1rem"
+  >
+    <Button *ngIf="!isConnected" (click)="connectToWebsocket()"
+      >Connect to Websocket</Button
+    >
+    <Button *ngIf="isConnected" (click)="disconnectFromWebsocket()"
+      >Disconnect from Websocket</Button
+    >
+    <app-connection-indicator
+      [isConnected]="isConnected"
+    ></app-connection-indicator>
+  </div>
+
+  <div>
+    <p>Name</p>
+    <input type="text" [(ngModel)]="sName" class="message-input" />
+  </div>
+  <div>
+    <p>Nachricht</p>
+    <input type="text" [(ngModel)]="sMessage" class="message-input" />
+  </div>
+
+  <Button
+    class="button"
+    (click)="sendMessage()"
+    style="width: 25%; margin-top: 5px"
+    >Send Message</Button
+  >
+  <p>Messages:</p>
+  <li
+    *ngFor="let message of messages"
+    class="message-wrapper"
+    style="list-style: none"
+  >
+    <ul class="message">
+      <div style="display: flex; flex-direction: column; gap: 5px">
+        <p>{{ message.name }}:</p>
+        <p>{{ message.message }}</p>
+      </div>
+    </ul>
+  </li>
+</div>
