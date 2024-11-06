@@ -75,7 +75,10 @@ export class ArmorDisplayComponent {
     this.callFetchArmorSetOnceADay();
   }
   getCurrentArmorSet() {
-    this.currentArmor = JSON.parse(localStorage.getItem('armorOfTheDay') || '');
+    const sArmorString = localStorage.getItem('armorOfTheDay');
+    if (!sArmorString || sArmorString == '') {
+      this.currentArmor = JSON.parse(sArmorString!);
+    }
   }
 
   callFetchArmorSetOnceADay() {
