@@ -7,7 +7,7 @@
     color: black;
   }
 
-  background-color: beige;
+  background-color: rgba($color: #f9e5cd, $alpha: 1);
   min-height: 5rem;
   border-radius: 5px;
   padding: 8px;
@@ -16,8 +16,17 @@
 }
 
 .message-input {
-  width: 25%;
+  width: 25rem;
   text-align: start;
   min-height: 2rem;
   padding: 5px;
+}
+
+.message-input.long-input {
+  height: 5rem !important;
+  color: black;
+}
+
+.message-button {
+  min-height: 3rem;
 }

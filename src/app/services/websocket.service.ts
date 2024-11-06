@@ -12,6 +12,9 @@ export class WebsocketService {
   private messageCallback = new Subject<{ name: string; message: string }>(); // Source
   messageCallbackObservable = this.messageCallback.asObservable(); // Stream
 
+  private errorCallback = new Subject<boolean>(); // Source
+  errorCallbackObservable = this.errorCallback.asObservable(); // Stream
+
   constructor() {}
 
   ngOnInit(): void {
@@ -33,7 +36,8 @@ export class WebsocketService {
         this.onMessageReceived(message)
       );
       this.ws.addEventListener('error', () => {
-        this.connectionCallback.next(false);
+        console.error("Couldn't connect to Websocket.");
+        this.errorCallback.next(true);
       });
       this.ws.addEventListener('close', () => {
         this.connectionCallback.next(false);

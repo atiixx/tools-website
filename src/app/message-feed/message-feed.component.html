@@ -19,26 +19,31 @@
   </div>
   <div>
     <p>Nachricht</p>
-    <input type="text" [(ngModel)]="sMessage" class="message-input" />
+    <div style="display: flex; gap: 1rem">
+      <textarea
+        [(ngModel)]="sMessage"
+        class="message-input long-input"
+        (keyup.enter)="sendMessage()"
+      ></textarea>
+      <Button class="button" (click)="sendMessage()" class="message-button"
+        >Send Message</Button
+      >
+    </div>
   </div>
 
-  <Button
-    class="button"
-    (click)="sendMessage()"
-    style="width: 25%; margin-top: 5px"
-    >Send Message</Button
-  >
-  <p>Messages:</p>
-  <li
-    *ngFor="let message of messages"
-    class="message-wrapper"
-    style="list-style: none"
-  >
-    <ul class="message">
-      <div style="display: flex; flex-direction: column; gap: 5px">
-        <p>{{ message.name }}:</p>
-        <p>{{ message.message }}</p>
-      </div>
-    </ul>
-  </li>
+  <div>
+    <p>Messages:</p>
+    <li
+      *ngFor="let message of messages"
+      class="message-wrapper"
+      style="list-style: none"
+    >
+      <ul class="message">
+        <div style="display: flex; flex-direction: column; gap: 5px">
+          <p style="font-size: larger">{{ message.name }}:</p>
+          <p>{{ message.message }}</p>
+        </div>
+      </ul>
+    </li>
+  </div>
 </div>
