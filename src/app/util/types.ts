@@ -3,6 +3,7 @@ export interface Message {
   name: string;
   message: string;
   date: string;
+  sameOrigin?: boolean;
 }
 
 export enum ConnectionStatus {

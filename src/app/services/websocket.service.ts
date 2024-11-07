@@ -17,7 +17,7 @@ export class WebsocketService {
   errorCallbackObservable = this.errorCallback.asObservable(); // Stream
 
   constructor() {
-    this.createWebSocket();
+    this.resetWebSocket();
   }
 
   ngOnInit(): void {
@@ -28,14 +28,13 @@ export class WebsocketService {
     });
   }
 
-  createWebSocket() {
+  resetWebSocket() {
     if (this.ws) {
-      this.ws.close();
-      this.ws = undefined;
+      this.disconnect();
     }
-    this.ws = new WebSocket('wss://ws-message-feed-server.onrender.com');
+    this.ws = new WebSocket('ws://localhost:8080');
+    //this.ws = new WebSocket('wss://ws-message-feed-server.onrender.com');
     this.connectionCallback.next(ConnectionStatus.CONNECTING);
-    //this.ws = new WebSocket('ws://localhost:8080');
     this.ws.addEventListener('open', () => {
       this.connectionCallback.next(ConnectionStatus.CONNECTED);
       this.onWSConnectionOpened();
@@ -54,11 +53,12 @@ export class WebsocketService {
   }
 
   connect(): void {
-    this.createWebSocket();
+    this.resetWebSocket();
   }
 
   disconnect() {
     this.ws?.close();
+    this.ws = undefined;
   }
 
   onMessageReceived(message: any) {

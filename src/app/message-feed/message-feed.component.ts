@@ -21,7 +21,7 @@ import { ConnectionStatus, Message } from '../util/types';
 export class MessageFeedComponent {
   connectionStatus = ConnectionStatus.DISCONNECTED;
   messages: Message[] = [];
-  sName: string = 'Hans Wöschtl';
+  sName: string = '';
   sMessage: string = 'Hello world!';
 
   constructor(private ws: WebsocketService, private snackBar: MatSnackBar) {
@@ -39,12 +39,21 @@ export class MessageFeedComponent {
             date: formatString(message.date),
           });
         });
+      } else if (data.name == 'Notification') {
+        this.messages.unshift({
+          id: 0,
+          name: data.name,
+          message: data.message,
+          date: '',
+          sameOrigin: false,
+        });
       } else {
         this.messages.unshift({
           id: data.id,
           name: data.name,
           message: data.message,
           date: formatString(data.date),
+          sameOrigin: data.sameOrigin ? data.sameOrigin : false,
         });
       }
     });

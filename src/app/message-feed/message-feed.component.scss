@@ -12,12 +12,28 @@
 }
 
 .message-box {
-  background-color: rgba($color: #f9e5cd, $alpha: 1);
   min-height: 5rem;
   border-radius: 5px;
   padding: 8px;
   margin-bottom: 6px;
   margin-right: 10px;
+  width: 85%;
+  border: 2px rgb(61, 61, 61) solid;
+  position: relative;
+
+  &.differentorigin {
+    background-color: rgba($color: #f9e5cd, $alpha: 1);
+    justify-self: start;
+    animation-name: popfromright;
+    animation-duration: 50ms;
+  }
+
+  &.sameorigin {
+    background-color: rgb(138, 239, 138);
+    justify-self: end;
+    animation-name: popfromleft;
+    animation-duration: 50ms;
+  }
 }
 
 .message-date {
@@ -59,4 +75,22 @@
   background-color: #cccccc;
   color: #666666;
   cursor: default;
+}
+
+@keyframes popfromright {
+  from {
+    left: 100px;
+  }
+  to {
+    left: 0px;
+  }
+}
+
+@keyframes popfromleft {
+  from {
+    left: -100px;
+  }
+  to {
+    left: 0px;
+  }
 }

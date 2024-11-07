@@ -72,7 +72,11 @@
         class="message-list"
         style="list-style: none"
       >
-        <ul class="message-box">
+        <ul
+          [ngClass]="{
+           'message-box': true, 'sameorigin': message.sameOrigin, 'differentorigin': !message.sameOrigin,
+          }"
+        >
           <div style="display: flex; flex-direction: column; gap: 5px">
             <div
               class="message-header"
