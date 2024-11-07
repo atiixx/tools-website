@@ -28,8 +28,8 @@ export class WebsocketService {
 
   connect(): void {
     if (this.ws == undefined) {
-      //this.ws = new WebSocket('wss://ws-message-feed-server.onrender.com');
-      this.ws = new WebSocket('ws://localhost:8080');
+      this.ws = new WebSocket('wss://ws-message-feed-server.onrender.com');
+      //this.ws = new WebSocket('ws://localhost:8080');
       this.ws.addEventListener('open', () => {
         this.connectionCallback.next(true);
         this.onWSConnectionOpened();
