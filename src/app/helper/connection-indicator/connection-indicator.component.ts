@@ -1,15 +1,17 @@
 import { Component, Input } from '@angular/core';
-import { NgStyle } from '@angular/common';
+import { CommonModule, NgStyle } from '@angular/common';
+import { ConnectionStatus } from '../../util/types';
 
 @Component({
   selector: 'app-connection-indicator',
   standalone: true,
-  imports: [NgStyle],
+  imports: [CommonModule, NgStyle],
   templateUrl: './connection-indicator.component.html',
   styleUrl: './connection-indicator.component.scss',
 })
 export class ConnectionIndicatorComponent {
-  @Input() isConnected: boolean = true;
+  @Input() connectionStatus: ConnectionStatus = ConnectionStatus.DISCONNECTED;
   sConnected: string = 'Connected';
   sNotConnected: string = 'Not Connected';
+  sConnecting: string = 'Connecting';
 }

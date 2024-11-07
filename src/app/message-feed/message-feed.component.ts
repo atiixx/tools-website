@@ -4,7 +4,7 @@ import { ConnectionIndicatorComponent } from '../helper/connection-indicator/con
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Message } from '../util/types';
+import { ConnectionStatus, Message } from '../util/types';
 
 @Component({
   selector: 'app-message-feed',
@@ -19,14 +19,14 @@ import { Message } from '../util/types';
   styleUrl: './message-feed.component.scss',
 })
 export class MessageFeedComponent {
-  isConnected = false;
+  connectionStatus = ConnectionStatus.DISCONNECTED;
   messages: Message[] = [];
   sName: string = 'Hans Wöschtl';
   sMessage: string = 'Hello world!';
 
   constructor(private ws: WebsocketService, private snackBar: MatSnackBar) {
-    this.ws.connectionCallbackObservable.subscribe((data: boolean) => {
-      this.isConnected = data;
+    this.ws.connectionCallbackObservable.subscribe((data: ConnectionStatus) => {
+      this.connectionStatus = data;
     });
     this.ws.messageCallbackObservable.subscribe((data: Message | Message[]) => {
       if (Array.isArray(data)) {
@@ -36,6 +36,7 @@ export class MessageFeedComponent {
             id: message.id,
             name: message.name,
             message: message.message,
+            date: formatString(message.date),
           });
         });
       } else {
@@ -43,6 +44,7 @@ export class MessageFeedComponent {
           id: data.id,
           name: data.name,
           message: data.message,
+          date: formatString(data.date),
         });
       }
     });
@@ -66,8 +68,22 @@ export class MessageFeedComponent {
   }
 
   sendMessage() {
-    const messageBlop = { name: this.sName, message: this.sMessage };
+    const messageBlop = {
+      name: this.sName,
+      message: this.sMessage,
+      date: new Date().toISOString(),
+    };
     this.sMessage = '';
     this.ws.sendMessage(JSON.stringify(messageBlop));
+  }
+}
+function formatString(isoDate: string): string {
+  if (isoDate) {
+    const aDate = isoDate.split('T');
+    const date = aDate[0].split('-').reverse().join('.');
+    const time = aDate[1].split('.')[0];
+    return date + ' ' + time;
+  } else {
+    return '';
   }
 }

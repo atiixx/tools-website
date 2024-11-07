@@ -2,11 +2,16 @@
   list-style-type: none;
 }
 
-.message {
-  p {
-    color: black;
-  }
+.message-list-container {
+  padding: 5px;
+  background-color: rgba($color: white, $alpha: 0.3);
+  border-width: 2px;
+  border-color: rgba($color: white, $alpha: 0.5);
+  border-style: solid;
+  border-radius: 5px;
+}
 
+.message-box {
   background-color: rgba($color: #f9e5cd, $alpha: 1);
   min-height: 5rem;
   border-radius: 5px;
@@ -15,8 +20,20 @@
   margin-right: 10px;
 }
 
+.message-date {
+  color: rgb(119, 119, 119);
+  font-size: 12px;
+}
+.message-name {
+  color: black;
+}
+.message-text {
+  color: black;
+  word-break: break-all;
+  white-space: normal;
+}
 .message-input {
-  width: 25rem;
+  width: 20rem;
   text-align: start;
   min-height: 2rem;
   padding: 5px;
@@ -27,6 +44,19 @@
   color: black;
 }
 
+.connect-button {
+  min-height: 3rem;
+}
+
 .message-button {
   min-height: 3rem;
+  padding: 15px;
+}
+
+.message-button:disabled,
+.message-button[disabled] {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+  cursor: default;
 }
