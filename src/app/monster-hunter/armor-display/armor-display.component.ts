@@ -76,7 +76,7 @@ export class ArmorDisplayComponent {
   }
   getCurrentArmorSet() {
     const sArmorString = localStorage.getItem('armorOfTheDay');
-    if (!sArmorString || sArmorString == '') {
+    if (sArmorString || sArmorString != '') {
       this.currentArmor = JSON.parse(sArmorString!);
     }
   }
