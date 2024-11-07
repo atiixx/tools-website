@@ -4,11 +4,8 @@ import { ConnectionIndicatorComponent } from '../helper/connection-indicator/con
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Message } from '../util/types';
 
-interface Message {
-  name: string;
-  message: string;
-}
 @Component({
   selector: 'app-message-feed',
   standalone: true,
@@ -31,8 +28,23 @@ export class MessageFeedComponent {
     this.ws.connectionCallbackObservable.subscribe((data: boolean) => {
       this.isConnected = data;
     });
-    this.ws.messageCallbackObservable.subscribe((data: Message) => {
-      this.messages.unshift({ name: data.name, message: data.message });
+    this.ws.messageCallbackObservable.subscribe((data: Message | Message[]) => {
+      if (Array.isArray(data)) {
+        data.sort((a, b) => (a.id > b.id ? 1 : b.id > a.id ? -1 : 0));
+        data.forEach((message) => {
+          this.messages.unshift({
+            id: message.id,
+            name: message.name,
+            message: message.message,
+          });
+        });
+      } else {
+        this.messages.unshift({
+          id: data.id,
+          name: data.name,
+          message: data.message,
+        });
+      }
     });
     this.ws.errorCallbackObservable.subscribe((error: boolean) => {
       if (error) {
