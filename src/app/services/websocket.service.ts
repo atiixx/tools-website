@@ -32,8 +32,8 @@ export class WebsocketService {
     if (this.ws) {
       this.disconnect();
     }
-    this.ws = new WebSocket('ws://localhost:8080');
-    //this.ws = new WebSocket('wss://ws-message-feed-server.onrender.com');
+    //this.ws = new WebSocket('ws://localhost:8080');
+    this.ws = new WebSocket('wss://ws-message-feed-server.onrender.com');
     this.connectionCallback.next(ConnectionStatus.CONNECTING);
     this.ws.addEventListener('open', () => {
       this.connectionCallback.next(ConnectionStatus.CONNECTED);
