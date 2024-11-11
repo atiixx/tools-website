@@ -1,25 +1,35 @@
-<header class="header">
-  <div style="display: flex; justify-content: center; align-items: center">
-    <img
-      src="/assets/icons/icons8werkzeugkasten256.png"
-      alt="Logo"
-      class="icon"
-    />
-    <div class="pagename">Jonas' Tools</div>
-  </div>
-  <div class="date">{{ date }}</div>
-  <nav>
-    <!-- Add your navigation items here -->
-  </nav>
-</header>
+<div class="container">
+  <header class="header">
+    <div style="display: flex; justify-content: center; align-items: center">
+      <img
+        src="assets/icons/icons8werkzeugkasten256.png"
+        alt="Logo"
+        class="icon"
+      />
+      <div class="pagename">Jona' Tools</div>
+    </div>
+    <nav>
+      <ul>
+        <li>
+          <a routerLink="/monster-hunter" routerLinkActive="active"
+            >Monster Hunter</a
+          >
+        </li>
+        <li>
+          <a routerLink="/api-stuff" routerLinkActive="active">API Stuff</a>
+        </li>
+        <li>
+          <a routerLink="/message-feed" routerLinkActive="active"
+            >Message Feed</a
+          >
+        </li>
+      </ul>
+    </nav>
+    <div class="date">{{ date }}</div>
+  </header>
 
-<main class="main">
-  <app-safi></app-safi>
-  <router-outlet></router-outlet>
-  <!-- This will render the routed component content -->
-</main>
-
-<footer class="footer">
-  <div class="">Created am 18. Juni 2023</div>
-  <!-- Add your footer content here -->
-</footer>
+  <main class="main">
+    <router-outlet></router-outlet>
+    <!-- This will render the routed component content -->
+  </main>
+</div>

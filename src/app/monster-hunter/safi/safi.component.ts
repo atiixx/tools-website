@@ -24,7 +24,7 @@ export class SafiComponent {
   endLastSafiEventInWiki = new Date(2023, 0, 26); // January 26, 2023
   endOfEventBefore = new Date(2022, 11, 29); // December 29, 2022
   currentDate = new Date();
-  eventStart = new Date();
+  safiiEventStart = new Date();
 
   eventDays =
     this.endLastSafiEventInWiki.getTime() -
@@ -40,25 +40,33 @@ export class SafiComponent {
       );
     }
 
-    this.eventStart = new Date(iteratorDate.getTime() - this.eventDays);
-    console.log('Is Safii event running?');
-    if (this.currentDate > this.eventStart) {
+    this.safiiEventStart = new Date(iteratorDate.getTime() - this.eventDays);
+    if (this.currentDate > this.safiiEventStart) {
       return true;
     } else {
       return false;
     }
   }
-  eventCurrentlyGoing = this.isSafiEventRunning();
-  nextEventUnformatted = new Date(
-    this.eventStart.getTime() + 24 * 60 * 60 * 1000
-  ); // Add 1 day in milliseconds
-  nextEvent = this.datePipe.transform(
-    this.nextEventUnformatted,
-    'EEE, dd MMM yyyy'
-  );
-  eventEnd = this.datePipe.transform(
-    this.eventStart.getTime() + this.eventDays,
-    'EEE, dd MMM yyyy'
-  );
-  sEventGoing = this.eventCurrentlyGoing ? 'Ja' : 'Nein';
+
+  calculateEndOfEvent() {
+    if (!this.isSafiEventRunning()) {
+      const nextSafiiEventUnformatted = new Date(
+        this.safiiEventStart.getTime() + 24 * 60 * 60 * 1000
+      ); // Add 1 day in milliseconds
+      const nextSafiiEvent = this.datePipe.transform(
+        nextSafiiEventUnformatted,
+        'EEE, dd MMM yyyy'
+      );
+      return nextSafiiEvent?.toString();
+    } else {
+      return this.datePipe
+        .transform(
+          this.safiiEventStart.getTime() + this.eventDays,
+          'EEE, dd MMM yyyy'
+        )
+        ?.toString();
+    }
+  }
+  safiEventCurrently: boolean = this.isSafiEventRunning();
+  eventEnd = this.calculateEndOfEvent();
 }

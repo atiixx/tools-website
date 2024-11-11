@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { SafiComponent } from '../safi/safi.component';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { SafiComponent } from '../monster-hunter/safi/safi.component';
 import { DatePipe, registerLocaleData } from '@angular/common';
 import de from '@angular/common/locales/de';
 import { MatIconModule } from '@angular/material/icon';
+import { CarvecalcComponent } from '../monster-hunter/carvecalc/carvecalc.component';
 
 @Component({
   selector: 'app-core',
   standalone: true,
-  imports: [RouterOutlet, SafiComponent, MatIconModule],
+  imports: [MatIconModule, RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './core.component.html',
   styleUrl: './core.component.scss',
   providers: [

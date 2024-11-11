@@ -1,0 +1,62 @@
+<div>
+  <div class="searchBarWrapper">
+    <input
+      #myInputRef
+      type="text"
+      (input)="search()"
+      placeholder="Search items..."
+      style="width: 200px"
+      [(ngModel)]="filterString"
+      (click)="myInputRef.select()"
+    />
+    <button
+      *ngIf="this.selectedItem"
+      (click)="goToLink()"
+      style="background-color: transparent"
+    >
+      <img
+        src="assets/icons/kiranicoicon.png"
+        style="width: 40px; border: 1px solid white; border-radius: 5px"
+      />
+    </button>
+  </div>
+  <ul class="searchResultList">
+    <li
+      class="searchResultItem"
+      *ngFor="let item of searchResults"
+      (click)="selectItem(item)"
+      style="width: 185px"
+    >
+      {{ item.name }}
+    </li>
+  </ul>
+
+  <div *ngIf="selectedItem" class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Monster</th>
+          <th>Rank</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of getTableData()">
+          <td>
+            {{ row.monster_name }}
+          </td>
+          <td>
+            {{ row.rank }}
+          </td>
+          <td style="text-align: right">
+            <button (click)="calculateSelected(row.monster_name, row.rank)">
+              <mat-icon aria-hidden="false" aria-label="Calculator Icon"
+                >calculate</mat-icon
+              >
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<h2>MH:W Armorset of the Day!</h2>
+
+<div class="wrapper">
+  <div>Name: {{ sTodaysArmorset }}</div>
+  <div>Rank: {{ sRank }}</div>
+  <div class="hbox">
+    <div class="maleArmor" *ngIf="mHead || mBody || mLegs || mFeet || mArms">
+      <div>Male Armor</div>
+      <img *ngIf="mHead" src="{{ mHead }}" class="armorImage" />
+      <img *ngIf="mBody" src="{{ mBody }}" class="armorImage" />
+      <img *ngIf="mLegs" src="{{ mLegs }}" class="armorImage" />
+      <img *ngIf="mFeet" src="{{ mFeet }}" class="armorImage" />
+      <img *ngIf="mArms" src="{{ mArms }}" class="armorImage" />
+    </div>
+    <div class="femaleArmor" *ngIf="fHead || fBody || fLegs || fFeet || fArms">
+      <div style="font-weight: bold">Female Armor</div>
+      <img *ngIf="fHead" src="{{ fHead }}" class="armorImage" />
+      <img *ngIf="fBody" src="{{ fBody }}" class="armorImage" />
+      <img *ngIf="fLegs" src="{{ fLegs }}" class="armorImage" />
+      <img *ngIf="fFeet" src="{{ fFeet }}" class="armorImage" />
+      <img *ngIf="fArms" src="{{ fArms }}" class="armorImage" />
+    </div>
+    <div class="listWrapper">
+      <div>
+        <h3>Skills:</h3>
+        <ul class="skillList">
+          <li *ngFor="let skill of aSkills">
+            {{ skill }}
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h3>Resistances:</h3>
+        <ul class="resistanceList">
+          <li *ngFor="let resistance of aResistances">
+            {{ resistance }}
+          </li>
+        </ul>
+      </div>
+      <div>Defense: {{ defense }}</div>
+    </div>
+  </div>
+</div>

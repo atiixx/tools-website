@@ -1,0 +1,18 @@
+<div style="display: flex; flex-direction: row; gap: 0.5rem">
+  <div
+    *ngIf="connectionStatus == 'Connected'"
+    class="dot"
+    style="background-color: green"
+  ></div>
+  <div
+    *ngIf="connectionStatus == 'Disconnected'"
+    class="dot"
+    style="background-color: red"
+  ></div>
+  <div
+    *ngIf="connectionStatus == 'Connecting'"
+    class="dot"
+    style="background-color: yellow"
+  ></div>
+  <div>{{ connectionStatus }}</div>
+</div>

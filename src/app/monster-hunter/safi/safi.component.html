@@ -1,0 +1,20 @@
+<h2>MH:W Event Info</h2>
+<div class="wrapper">
+  <div>
+    <div>Which Event is currently running?</div>
+    <div *ngIf="safiEventCurrently; else kulveBlock" class="columnFlexBox">
+      <img class="monstericon" src="assets/icons/safi.png" />
+      <div style="color: red">Safi'Jiiva</div>
+    </div>
+    <ng-template #kulveBlock>
+      <div class="columnFlexBox">
+        <img src="assets/icons/kulve.png" class="monstericon" />
+        <div style="color: gold">Kulve Taroth</div>
+      </div>
+    </ng-template>
+  </div>
+  <div class="answerBox">
+    Event changes on <br />
+    {{ eventEnd }}
+  </div>
+</div>

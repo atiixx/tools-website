@@ -1,0 +1,31 @@
+.answerBox {
+  border: 2px solid black;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 12rem;
+  height: 10rem;
+  font-size: large;
+}
+
+.wrapper {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.monstericon {
+  width: 9rem;
+  height: 9rem;
+}
+
+.columnFlexBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

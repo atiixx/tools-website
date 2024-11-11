@@ -1,0 +1,149 @@
+<h2>Timo's carving calculator</h2>
+
+<div class="hbox">
+  <div>
+    <div class="itemSearcherWrapper">
+      <app-search
+        (sendCalcTask)="receiveCalcTask($event)"
+        [game]="game"
+      ></app-search>
+      <select
+        name="games"
+        id="games"
+        (ngModelChange)="onGameChange($event)"
+        [(ngModel)]="game"
+        class="gameSelection"
+      >
+        <option value="mh3u">MH3U</option>
+        <option value="mh4u">MH4U</option>
+        <option value="mhgu">MHGU</option>
+      </select>
+    </div>
+  </div>
+  <div>
+    <div style="font-weight: bold; margin: 8px 0px 8px 0px">
+      Probabilites (Tail Carve)
+    </div>
+    <table class="table-container">
+      <tr>
+        <td>Carves:</td>
+        <td class="table-td">
+          {{ sChanceWithKill }}% (
+          <ng-container
+            style="display: inline"
+            *ngIf="sChanceWithCaptureAndTail !== sChanceWithCapture"
+          >
+            {{ sChanceWithKillTailCut }}%
+          </ng-container>
+          )
+        </td>
+      </tr>
+      <tr>
+        <td>Capture:</td>
+        <td class="table-td">
+          <ng-container *ngIf="sChanceWithCapture !== '0'">
+            {{ sChanceWithCapture }}% (
+            <ng-container
+              style="display: inline"
+              *ngIf="sChanceWithCaptureAndTail !== sChanceWithCapture"
+            >
+              {{ sChanceWithCaptureAndTail }}%
+            </ng-container>
+            )
+          </ng-container>
+          <ng-container *ngIf="sChanceWithCapture == '0'">
+            No Data
+          </ng-container>
+        </td>
+      </tr>
+    </table>
+    <div
+      *ngIf="hasMultipleCarvePoints || hasNonStandardBodyCarvePoints"
+      style="margin-top: 2px"
+    >
+      <span style="color: red"
+        >!!Special Monsterpart!!
+        <app-popover
+          ><div style="color: black; font-size: small">
+            <div style="color: black">Probabilites could differ due to:</div>
+            <div *ngIf="hasMultipleCarvePoints" style="color: black">
+              Multiple Carve Points.
+            </div>
+            <div *ngIf="hasNonStandardBodyCarvePoints" style="color: black">
+              Carve point something other than body.
+            </div>
+            <div style="color: black">Please check Kiranico for details.</div>
+          </div></app-popover
+        >
+      </span>
+    </div>
+    <div *ngIf="aOtherTypes.length > 0" style="margin-top: 10px">
+      <span>Raise the chance by: </span>
+      <ul *ngFor="let type of aOtherTypes">
+        <li style="margin-left: 15px">
+          {{ type }}
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="calculatorWrapper">
+    <div>
+      <label class="label">Carving Chance:</label>
+      <input
+        type="text"
+        placeholder="%"
+        [(ngModel)]="carvingChance"
+        (ngModelChange)="onInputChange($event)"
+        class="inputfield"
+        style="width: 50px"
+      />%
+    </div>
+    <div>
+      <label class="label">Amount of Carves:</label>
+      <input
+        type="text"
+        placeholder="%"
+        [(ngModel)]="carvingCount"
+        (ngModelChange)="onCarveCountChange($event)"
+        class="inputfield"
+        style="width: 50px"
+      />
+    </div>
+    <div>
+      <label class="label">Tail Carving Chance:</label>
+      <input
+        type="text"
+        placeholder="%"
+        [(ngModel)]="tailCarveChance"
+        (ngModelChange)="onTailCarveChange($event)"
+        class="inputfield"
+        style="width: 50px"
+      />%
+    </div>
+    <div>
+      <label class="label">Amount of Tail Carves:</label>
+      <input
+        type="text"
+        placeholder="%"
+        [(ngModel)]="tailCarveCount"
+        (ngModelChange)="onTailCarveCountChange($event)"
+        class="inputfield"
+        style="width: 50px"
+      />
+    </div>
+    <div>
+      <label class="label">Chance on Capture:</label>
+      <input
+        type="text"
+        placeholder="%"
+        [(ngModel)]="captureChance"
+        (ngModelChange)="onCaptureChanceChange($event)"
+        class="inputfield"
+        style="width: 50px"
+      />%
+    </div>
+    <div class="buttonWrapper">
+      <button class="button" (click)="calculate()">Calculate</button>
+    </div>
+  </div>
+</div>
