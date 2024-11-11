@@ -116,8 +116,8 @@ export class ArmorDisplayComponent {
 
   fetchArmorSet(randomNumber: number) {
     this.http
-      .get(`https://mhw-db.com/armor/sets/${randomNumber}`)
-      .subscribe((data) => {
+      .get<ArmorData>(`https://mhw-db.com/armor/sets/${randomNumber}`)
+      .subscribe((data: ArmorData) => {
         const armor = data as ArmorData;
         const hasAssets =
           armor.pieces.filter((armorPiece) => armorPiece.assets != null)

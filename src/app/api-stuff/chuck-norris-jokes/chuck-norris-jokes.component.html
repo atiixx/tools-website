@@ -1,0 +1,10 @@
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <div style="margin: 16px 0px 6px 0px">
+    <p>API used: https://api.chucknorris.io/</p>
+    <p>Get a random Chuck Norris Joke!</p>
+    <div style="display: flex; flex-direction: row; gap: 6px; margin-top: 6px">
+      <Button (click)="getRandomChuckNorrisJoke()">Get Joke!</Button>
+    </div>
+    <p style="margin-top: 6px">{{ sJoke }}</p>
+  </div>
+</div>
