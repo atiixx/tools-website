@@ -1,0 +1,7 @@
+.api-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  grid-auto-rows: minmax(100px, auto);
+  width: 100%;
+}
