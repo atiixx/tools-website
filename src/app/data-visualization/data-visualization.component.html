@@ -1,0 +1,28 @@
+<input
+  type="file"
+  (change)="loadFileData($event)"
+  class="file-input"
+  accept=".csv"
+  #fileUpload
+/>
+
+<div class="file-upload">
+  {{ fileName || "No file uploaded yet." }}
+
+  <button
+    mat-mini-fab
+    color="primary"
+    class="upload-btn"
+    (click)="fileUpload.click()"
+  >
+    <mat-icon>attach_file</mat-icon>
+  </button>
+</div>
+
+<ul *ngFor="let header of csvHeaders">
+  <li>
+    {{ header }}
+  </li>
+</ul>
+
+<h2>WAS SOLLEN DIE ELTERN SAGEN</h2>
