@@ -33,7 +33,7 @@ export class WebsocketService {
       this.disconnect();
     }
     //this.ws = new WebSocket('ws://localhost:8080');
-    this.ws = new WebSocket('wss://ws-message-feed-server.onrender.com');
+    this.ws = new WebSocket('wss://ws-message-feed-server.duckdns.org');
     this.connectionCallback.next(ConnectionStatus.CONNECTING);
     this.ws.addEventListener('open', () => {
       this.connectionCallback.next(ConnectionStatus.CONNECTED);
@@ -42,8 +42,8 @@ export class WebsocketService {
     this.ws.addEventListener('message', (message: unknown) =>
       this.onMessageReceived(message)
     );
-    this.ws.addEventListener('error', () => {
-      console.error("Couldn't connect to Websocket.");
+    this.ws.addEventListener('error', (event) => {
+      console.error("Couldn't connect to Websocket.", event);
       this.connectionCallback.next(ConnectionStatus.DISCONNECTED);
       this.errorCallback.next(true);
     });
