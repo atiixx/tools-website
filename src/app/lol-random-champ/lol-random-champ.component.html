@@ -1,0 +1,37 @@
+<div>
+  <h2>Select a pool of Champions and choose a random one</h2>
+  <div class="champlist-container">
+    Champion Selection
+    <ul class="champlist">
+      <li *ngFor="let champ of aAllChampions">
+        <div class="champlist-item">
+          <Button
+            class="champlist-addbutton"
+            (click)="onAddButtonClicked(champ)"
+          >
+            +
+          </Button>
+          {{ champ }} <br />
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="champlist-container">
+    Champion Pool
+    <ul class="champlist">
+      <li *ngFor="let champ of aSelectedChampions">
+        <div class="champlist-item">
+          <Button
+            class="champlist-addbutton"
+            (click)="onRemoveButtonClicked(champ)"
+          >
+            -
+          </Button>
+          {{ champ }} <br />
+        </div>
+      </li>
+    </ul>
+  </div>
+  <Button (click)="onRandomButtonClicked()"> Get Random Champ </Button>
+  <h3>{{ sSelectedChamp }}</h3>
+</div>

@@ -1,0 +1,22 @@
+.champlist {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.champlist-container {
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.champlist-item {
+  margin: 5px;
+}
+
+.champlist-addbutton {
+  width: 35px;
+  height: 35px;
+
+}
