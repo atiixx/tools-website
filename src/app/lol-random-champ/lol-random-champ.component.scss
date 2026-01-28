@@ -1,7 +1,20 @@
-.champ-selection-page {
+.champ-header {
   display: flex;
   gap: 12px;
-height: 800px;
+}
+
+.header-button {
+
+  max-height: 12px;
+  margin-bottom: 6px;
+
+}
+
+.champ-selection-page {
+
+  display: flex;
+  gap: 12px;
+  height: 800px;
 }
 
 .champlist-container {
@@ -58,8 +71,8 @@ height: 800px;
   margin-bottom: 8px;
 }
 
-.champ-random-button {
-background: white;
+.champ-button {
+  background: white;
   border: none;
   cursor: pointer;
   padding: 24px;
@@ -67,24 +80,25 @@ background: white;
   align-items: center;
   justify-content: center;
   transition: transform 0.1s ease;
+
 }
 
-.champ-random-button:hover {
+.champ-button:hover {
   transform: scale(1.1);
   color: #673ab7;
 }
 
-.champname-container{
-   height: 200px;           /* fixed height */
-  width: 100%;             /* optional */
-  display: flex;            /* center content */
-  justify-content: center;  /* horizontal center */
-  align-items: center;      /* vertical center */
+.champname-container {
+  height: 200px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
- font-size: 64px;          /* really big text */
+  font-size: 64px;
   font-weight: bold;
   text-align: center;
   line-height: 1;
   color: black;
-text-shadow: 2px 2px 5px white;
+  text-shadow: 2px 2px 5px white;
 }

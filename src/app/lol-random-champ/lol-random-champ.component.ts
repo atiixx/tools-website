@@ -6,9 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { ChampListitemComponent } from "./champ-listitem/champ-listitem.component";
 import { MatButtonModule } from '@angular/material/button';
 
-//TODO: Third area with successfull champs
-//TODO Mach schön
-
 type ChampData = {
   name: string,
   selected: boolean,
@@ -29,6 +26,16 @@ export class LolRandomChampComponent {
 
   constructor(private http: HttpService) { }
 
+
+  get unselectedChampions(): ChampData[] {
+    return [...this.allChampionsMap.values()]
+      .filter(champ => !champ.selected);
+  }
+
+  get selectedChampions(): ChampData[] {
+    return [...this.allChampionsMap.values()]
+      .filter(champ => champ.selected);
+  }
 
   ngOnInit() {
     const selectedChampions = localStorage.getItem("selected_champions") || "";
@@ -101,14 +108,16 @@ export class LolRandomChampComponent {
     localStorage.setItem("checked_champions", aChecked.join(","));
   }
 
-  get unselectedChampions(): ChampData[] {
-    return [...this.allChampionsMap.values()]
-      .filter(champ => !champ.selected);
+  onSelectAllButtonClicked() {
+    localStorage.setItem("selected_champions", Array.from(this.allChampionsMap.keys()).join(","))
+    for (const [_, value] of this.allChampionsMap) {
+      value.selected = true;
+    }
   }
-
-  get selectedChampions(): ChampData[] {
-    return [...this.allChampionsMap.values()]
-      .filter(champ => champ.selected);
+  onDeselectAllButtonClicked() {
+    localStorage.setItem("selected_champions", "")
+    for (const [_, value] of this.allChampionsMap) {
+      value.selected = false;
+    }
   }
-
 }

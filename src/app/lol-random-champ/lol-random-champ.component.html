@@ -1,4 +1,17 @@
-<h2>Select a pool of Champions and choose a random one</h2>
+<div class="champ-header">
+  <h2>Select a pool of Champions and choose a random one</h2>
+  <button
+    class="champ-button header-button"
+    (click)="onSelectAllButtonClicked()"
+  >
+    Select all</button
+  ><button
+    class="champ-button header-button"
+    (click)="onDeselectAllButtonClicked()"
+  >
+    Deselect all
+  </button>
+</div>
 <div class="champ-selection-page">
   <div class="champlist-container panel">
     Champion Selection
@@ -19,7 +32,7 @@
       <div class="champname-container">{{ sSelectedChamp.name }}</div>
       <button
         type="button"
-        class="champ-random-button"
+        class="champ-button"
         (click)="onRandomButtonClicked()"
       >
         <mat-icon>casino</mat-icon>
