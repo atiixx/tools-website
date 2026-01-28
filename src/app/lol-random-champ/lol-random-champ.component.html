@@ -3,35 +3,32 @@
   <div class="champlist-container">
     Champion Selection
     <ul class="champlist">
-      <li *ngFor="let champ of aAllChampions">
-        <div class="champlist-item">
-          <Button
-            class="champlist-addbutton"
-            (click)="onAddButtonClicked(champ)"
-          >
-            +
-          </Button>
-          {{ champ }} <br />
-        </div>
+      <li *ngFor="let champ of unselectedChampions">
+        <app-champ-listitem
+          [champname]="champ.name"
+          [selected]="champ.selected"
+          [checked]="champ.checked"
+          (check_clicked)="onChampChecked(champ)"
+          (selectionbutton_clicked)="onSelectionButtonClicked(champ)"
+        ></app-champ-listitem>
       </li>
     </ul>
   </div>
   <div class="champlist-container">
     Champion Pool
     <ul class="champlist">
-      <li *ngFor="let champ of aSelectedChampions">
-        <div class="champlist-item">
-          <Button
-            class="champlist-addbutton"
-            (click)="onRemoveButtonClicked(champ)"
-          >
-            -
-          </Button>
-          {{ champ }} <br />
-        </div>
+      <li *ngFor="let champ of selectedChampions">
+        <app-champ-listitem
+          [champname]="champ.name"
+          [selected]="champ.selected"
+          [checked]="champ.checked"
+          (check_clicked)="onChampChecked(champ)"
+          (selectionbutton_clicked)="onSelectionButtonClicked(champ)"
+        />
       </li>
     </ul>
   </div>
+
   <Button (click)="onRandomButtonClicked()"> Get Random Champ </Button>
-  <h3>{{ sSelectedChamp }}</h3>
+  <h3>{{ sSelectedChamp.name }}</h3>
 </div>

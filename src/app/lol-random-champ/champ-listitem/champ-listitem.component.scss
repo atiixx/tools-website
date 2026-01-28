@@ -1,0 +1,36 @@
+.champ-listitem {
+  margin: 5px;
+  border-color: lightgray;
+  border-radius: 25px;
+  border-style: solid;
+  border-width: 3px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+
+
+.champ-checked-negative {
+  border-color: red;
+  background-color: rgb(255 0 0 / 10%);
+
+  .champ-icon {
+    color: red;
+    font-weight: 900
+  }
+}
+
+
+.champ-checked-positive {
+  border-color: green;
+  background-color: rgb(0 255 0 / 10%);
+
+  .champ-icon {
+    color: green
+  }
+}
+
+.champ-name {
+  font-weight: bold;
+}

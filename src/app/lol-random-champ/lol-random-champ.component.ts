@@ -2,29 +2,39 @@ import { Component } from '@angular/core';
 import { HttpService } from '../services/http.service';
 import { CommonModule } from '@angular/common';
 import _ from 'lodash';
+import { MatIconModule } from '@angular/material/icon';
+import { ChampListitemComponent } from "./champ-listitem/champ-listitem.component";
+
+//TODO: Third area with successfull champs
+//TODO Mach schön
+
+type ChampData = {
+  name: string,
+  selected: boolean,
+  checked: boolean
+}
+
 
 @Component({
   selector: 'app-lol-random-champ',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatIconModule, ChampListitemComponent],
   templateUrl: './lol-random-champ.component.html',
   styleUrl: './lol-random-champ.component.scss'
 })
 export class LolRandomChampComponent {
-  aAllChampions: any[] = [];
-  aSelectedChampions: string[] = [];
-  sSelectedChamp: any;
+  allChampionsMap: Map<string, ChampData> = new Map<string, ChampData>();
+  sSelectedChamp: ChampData = { name: "", selected: false, checked: false };
 
   constructor(private http: HttpService) { }
 
 
   ngOnInit() {
-    const storageChampions = localStorage.getItem("selected_champions")
-    if (storageChampions && storageChampions != "") {
-      this.aSelectedChampions = storageChampions.split(",")
-    }
+    const selectedChampions = localStorage.getItem("selected_champions") || "";
+    const checkedChampions = localStorage.getItem("checked_champions") || "";
     this.getCurrentVersion().subscribe((versions: string[]) =>
-      this.getAllChampions(versions[0]))
+      this.getAllChampions(versions[0], selectedChampions.split(","), checkedChampions.split(","))
+    );
   }
 
 
@@ -34,45 +44,70 @@ export class LolRandomChampComponent {
       .get<string[]>(`${sVersionApiUrl}`)
   }
 
-  getAllChampions(version: string) {
+  getAllChampions(version: string, selectedChampions: string[], checkedChampions: string[]) {
     const sAllChampionsApiUrl = 'https://ddragon.leagueoflegends.com/cdn/' + version + '/data/en_US/champion.json';
     this.http
       .get<any>(`${sAllChampionsApiUrl}`)
       .subscribe((champions: any) => {
         if (champions) {
           for (let champ in champions.data) {
-            this.aAllChampions.push(champions.data[champ].name);
+            const champname = champions.data[champ].name;
+            const isChecked: boolean = checkedChampions.includes(champname);
+            const isSelected: boolean = selectedChampions.includes(champname);
+            this.allChampionsMap.set(champions.data[champ].name, { name: champname, selected: isSelected, checked: isChecked })
           }
         }
       });
   }
 
-  onAddButtonClicked(champ: string) {
-    this.aSelectedChampions.push(champ)
-    this.aSelectedChampions.sort()
-    const index = this.aAllChampions.indexOf(champ, 0);
-    if (index > -1) {
-      this.aAllChampions.splice(index, 1);
+  onSelectionButtonClicked(champ: ChampData) {
+    this.allChampionsMap.set(champ.name, { name: champ.name, selected: !champ.selected, checked: champ.checked })
+    const already_selected = localStorage.getItem("selected_champions");
+    const aSelected = already_selected ? already_selected.split(",") : [];
+    if (aSelected.includes(champ.name)) {
+      const index = aSelected.indexOf(champ.name);
+      aSelected.splice(index, 1);
+    } else {
+      aSelected.push(champ.name);
     }
-    localStorage.setItem("selected_champions", this.aSelectedChampions.join(","));
-  }
-
-  onRemoveButtonClicked(champ: string) {
-    this.aAllChampions.push(champ)
-    this.aAllChampions.sort()
-    const index = this.aSelectedChampions.indexOf(champ, 0);
-    if (index > -1) {
-      this.aSelectedChampions.splice(index, 1);
-    }
-    localStorage.setItem("selected_champions", this.aSelectedChampions.join(","));
+    localStorage.setItem("selected_champions", aSelected.join(","));
   }
 
   onRandomButtonClicked() {
-    if (this.aSelectedChampions.length == 0) {
-      this.sSelectedChamp = "Keine Champions ausgewählt"
+    const selected = [];
+    for (const [_, value] of this.allChampionsMap) {
+      if (value.selected) {
+        selected.push(value)
+      }
+    }
+    if (selected.length == 0) {
+      this.sSelectedChamp.name = "Keine Champions ausgewählt"
       return
     }
-    this.sSelectedChamp = _.sample(this.aSelectedChampions)
+    this.sSelectedChamp = _.sample(selected)!
+  }
+
+  onChampChecked(champ: ChampData) {
+    this.allChampionsMap.set(champ.name, { name: champ.name, selected: champ.selected, checked: !champ.checked })
+    const already_checked = localStorage.getItem("checked_champions");
+    const aChecked = already_checked ? already_checked.split(",") : [];
+    if (aChecked.includes(champ.name)) {
+      const index = aChecked.indexOf(champ.name);
+      aChecked.splice(index, 1);
+    } else {
+      aChecked.push(champ.name);
+    }
+    localStorage.setItem("checked_champions", aChecked.join(","));
+  }
+
+  get unselectedChampions(): ChampData[] {
+    return [...this.allChampionsMap.values()]
+      .filter(champ => !champ.selected);
+  }
+
+  get selectedChampions(): ChampData[] {
+    return [...this.allChampionsMap.values()]
+      .filter(champ => champ.selected);
   }
 
 }

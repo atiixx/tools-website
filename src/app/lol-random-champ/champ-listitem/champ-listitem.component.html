@@ -1,0 +1,19 @@
+<div
+  class="champ-listitem"
+  [ngClass]="{
+    'champ-checked-positive': checked,
+    'champ-checked-negative': !checked,
+  }"
+>
+  <button mat-icon-button (click)="select_champ()">
+    <mat-icon class="champ-icon">
+      {{ selected ? "remove" : "add" }}
+    </mat-icon>
+  </button>
+  <div class="champ-name">{{ champname }}</div>
+  <button mat-icon-button (click)="check_champ()">
+    <mat-icon class="champ-icon">
+      {{ checked ? "check" : "close" }}
+    </mat-icon>
+  </button>
+</div>
