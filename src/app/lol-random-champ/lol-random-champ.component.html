@@ -1,6 +1,6 @@
-<div>
-  <h2>Select a pool of Champions and choose a random one</h2>
-  <div class="champlist-container">
+<h2>Select a pool of Champions and choose a random one</h2>
+<div class="champ-selection-page">
+  <div class="champlist-container panel">
     Champion Selection
     <ul class="champlist">
       <li *ngFor="let champ of unselectedChampions">
@@ -14,21 +14,31 @@
       </li>
     </ul>
   </div>
-  <div class="champlist-container">
-    Champion Pool
-    <ul class="champlist">
-      <li *ngFor="let champ of selectedChampions">
-        <app-champ-listitem
-          [champname]="champ.name"
-          [selected]="champ.selected"
-          [checked]="champ.checked"
-          (check_clicked)="onChampChecked(champ)"
-          (selectionbutton_clicked)="onSelectionButtonClicked(champ)"
-        />
-      </li>
-    </ul>
+  <div class="champlist-halfcontainer panel">
+    <div class="champlist-buttoncontainer">
+      <div class="champname-container">{{ sSelectedChamp.name }}</div>
+      <button
+        type="button"
+        class="champ-random-button"
+        (click)="onRandomButtonClicked()"
+      >
+        <mat-icon>casino</mat-icon>
+        Pick Random Champion
+      </button>
+    </div>
+    <div class="champlist-half">
+      Selected Pool
+      <ul class="champlist">
+        <li *ngFor="let champ of selectedChampions">
+          <app-champ-listitem
+            [champname]="champ.name"
+            [selected]="champ.selected"
+            [checked]="champ.checked"
+            (check_clicked)="onChampChecked(champ)"
+            (selectionbutton_clicked)="onSelectionButtonClicked(champ)"
+          />
+        </li>
+      </ul>
+    </div>
   </div>
-
-  <Button (click)="onRandomButtonClicked()"> Get Random Champ </Button>
-  <h3>{{ sSelectedChamp.name }}</h3>
 </div>

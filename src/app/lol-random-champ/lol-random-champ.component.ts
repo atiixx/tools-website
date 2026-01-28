@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import _ from 'lodash';
 import { MatIconModule } from '@angular/material/icon';
 import { ChampListitemComponent } from "./champ-listitem/champ-listitem.component";
+import { MatButtonModule } from '@angular/material/button';
 
 //TODO: Third area with successfull champs
 //TODO Mach schön
@@ -18,7 +19,7 @@ type ChampData = {
 @Component({
   selector: 'app-lol-random-champ',
   standalone: true,
-  imports: [CommonModule, MatIconModule, ChampListitemComponent],
+  imports: [CommonModule, MatIconModule, MatButtonModule, ChampListitemComponent],
   templateUrl: './lol-random-champ.component.html',
   styleUrl: './lol-random-champ.component.scss'
 })

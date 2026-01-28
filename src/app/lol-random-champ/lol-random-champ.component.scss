@@ -1,12 +1,90 @@
-.champlist {
-  list-style: none;
+.champ-selection-page {
   display: flex;
-  flex-wrap: wrap;
+  gap: 12px;
+height: 800px;
 }
 
 .champlist-container {
-  border-style: solid;
-  border-width: 2px;
+  flex: 1;
+  border: 2px solid;
   border-radius: 5px;
   padding: 5px;
+  max-height: 800px;
+  overflow-y: auto;
+  height: 99%;
+}
+
+
+.champlist-halfcontainer {
+  flex: 1;
+  max-height: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 5px;
+  height: 100%;
+}
+
+.champlist-buttoncontainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100%;
+  flex-direction: column;
+}
+
+.champlist-half {
+  flex: 1;
+  border: 2px solid;
+  border-radius: 5px;
+  padding: 5px;
+  overflow-y: auto;
+}
+
+.panel ul {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.panel ul li {
+  flex: 0 0 calc(20% - 8px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.champ-random-button {
+background: white;
+  border: none;
+  cursor: pointer;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s ease;
+}
+
+.champ-random-button:hover {
+  transform: scale(1.1);
+  color: #673ab7;
+}
+
+.champname-container{
+   height: 200px;           /* fixed height */
+  width: 100%;             /* optional */
+  display: flex;            /* center content */
+  justify-content: center;  /* horizontal center */
+  align-items: center;      /* vertical center */
+  overflow: hidden;
+ font-size: 64px;          /* really big text */
+  font-weight: bold;
+  text-align: center;
+  line-height: 1;
+  color: black;
+text-shadow: 2px 2px 5px white;
 }
